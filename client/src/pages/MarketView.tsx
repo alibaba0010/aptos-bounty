@@ -229,7 +229,7 @@ const MarketView: React.FC<MarketViewProps> = ({ marketplaceAddr }) => {
       {/* Buy Modal */}
       <Modal
         title="Purchase NFT"
-        visible={isBuyModalVisible}
+        open={isBuyModalVisible}
         onCancel={handleCancelBuy}
         footer={[
           <Button key="cancel" onClick={handleCancelBuy}>
