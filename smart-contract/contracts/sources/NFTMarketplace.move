@@ -1,5 +1,5 @@
 // TODO# 1: Define Module and Marketplace Address
-address <address> {
+address 0x65a3857a226af09f7f6fa4cf017f9a00718f64be692da9df4429a747faf3b78d {
 
     module NFTMarketplace {
         use 0x1::signer;
@@ -66,6 +66,23 @@ struct NFT has store, key {
 
             vector::push_back(&mut marketplace.nfts, new_nft);
         }
+        //   public entry fun mint_Nft(account: &signer, marketplace_addr: address,name: vector<u8>, description: vector<u8>, uri: vector<u8>, rarity: u8) acquires Marketplace {
+        //     let marketplace = borrow_global_mut<Marketplace>(signer::address_of(account));// signer::address_of(account)
+        //     let nft_id = vector::length(&marketplace.nfts);
+
+        //     let new_nft = NFT {
+        //         id: nft_id,
+        //         owner: signer::address_of(account),
+        //         name,
+        //         description,
+        //         uri,
+        //         price: 0,
+        //         for_sale: false,
+        //         rarity
+        //     };
+
+        //     vector::push_back(&mut marketplace.nfts, new_nft);
+        // }
 
         // TODO# 9: View NFT Details
  #[view]

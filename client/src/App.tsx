@@ -18,6 +18,7 @@ const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
 // TODOs
 // 1. configure marketplace address to be gotten from web
 // functionality feature that allows users to make offers on NFTs listed in the marketplace, enabling sellers to accept or decline incoming offers for their assets.
+// make an offer and place a bidon the nft
 const marketplaceAddr =
   "0x65a3857a226af09f7f6fa4cf017f9a00718f64be692da9df4429a747faf3b78d";
 
@@ -44,11 +45,17 @@ function App() {
 
       const entryFunctionPayload = {
         type: "entry_function_payload",
-        function: `${marketplaceAddr}::NFTMarketplace::mint_nft`,
+        function: `${marketplaceAddr}::NFTMarketplace::mint_Nft`,
         type_arguments: [],
-        arguments: [nameVector, descriptionVector, uriVector, values.rarity],
+        arguments: [
+          marketplaceAddr,
+          nameVector,
+          descriptionVector,
+          uriVector,
+          values.rarity,
+        ],
       };
-      console.log(entryFunctionPayload);
+      console.log(entryFunctionPayload.arguments[0]);
       const txnResponse = await (window as any).aptos.signAndSubmitTransaction({
         entryFunctionPayload,
       });
