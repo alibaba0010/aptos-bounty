@@ -13,6 +13,7 @@ import {
 } from "antd";
 import { AptosClient } from "aptos";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import Offer from "../components/Offer";
 
 const { Title } = Typography;
 const { Meta } = Card;
@@ -33,6 +34,7 @@ type NFT = {
 
 interface MarketViewProps {
   marketplaceAddr: string;
+  account: string | undefined;
 }
 
 const rarityColors: { [key: number]: string } = {
@@ -53,12 +55,15 @@ const truncateAddress = (address: string, start = 6, end = 4) => {
   return `${address.slice(0, start)}...${address.slice(-end)}`;
 };
 
-const MarketView: React.FC<MarketViewProps> = ({ marketplaceAddr }) => {
-  console.log("MArket place: " + marketplaceAddr);
+const MarketView: React.FC<MarketViewProps> = ({
+  marketplaceAddr,
+  account,
+}) => {
   const { signAndSubmitTransaction } = useWallet();
   const [nfts, setNfts] = useState<NFT[]>([]);
   const [rarity, setRarity] = useState<"all" | number>("all");
   const [currentPage, setCurrentPage] = useState(1);
+  const [offerButton, setOfferButton] = useState(false);
   const pageSize = 8;
 
   const [isBuyModalVisible, setIsBuyModalVisible] = useState(false);
@@ -66,8 +71,13 @@ const MarketView: React.FC<MarketViewProps> = ({ marketplaceAddr }) => {
 
   useEffect(() => {
     handleFetchNfts(undefined);
-  }, []);
-
+    if (account !== marketplaceAddr) {
+      console.log("Heelo has");
+      setOfferButton(true);
+    } else {
+      setOfferButton(false);
+    }
+  }, [account]);
   const handleFetchNfts = async (selectedRarity: number | undefined) => {
     try {
       const response = await client.getAccountResource(
@@ -242,11 +252,11 @@ const MarketView: React.FC<MarketViewProps> = ({ marketplaceAddr }) => {
               >
                 {rarityLabels[nft.rarity]}
               </Tag>
-
               <Meta title={nft.name} description={`Price: ${nft.price} APT`} />
               <p>{nft.description}</p>
               <p>ID: {nft.id}</p>
               <p>Owner: {truncateAddress(nft.owner)}</p>
+              {offerButton && <Offer />}
             </Card>
           </Col>
         ))}
