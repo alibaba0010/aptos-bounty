@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MyNFTs from "./pages/MyNFTs";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import MintNFT from "./components/MintNFT";
+import NFTProvider from "./context/NFTProvider";
 
 // const client = new AptosClient("https://fullnode.devnet.aptoslabs.com/v1");
 
@@ -28,29 +29,31 @@ function App() {
   const handleMintNFTClick = () => setIsModalVisible(true);
 
   return (
-    <Router>
-      <Layout>
-        <NavBar onMintNFTClick={handleMintNFTClick} />{" "}
-        {/* Pass handleMintNFTClick to NavBar */}
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <MarketView
-                marketplaceAddr={marketplaceAddr}
-                account={account?.address}
-              />
-            }
+    <NFTProvider>
+      <Router>
+        <Layout>
+          <NavBar onMintNFTClick={handleMintNFTClick} />{" "}
+          {/* Pass handleMintNFTClick to NavBar */}
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <MarketView
+                  marketplaceAddr={marketplaceAddr}
+                  account={account?.address}
+                />
+              }
+            />
+            <Route path="/my-nfts" element={<MyNFTs />} />
+          </Routes>
+          <MintNFT
+            marketplaceAddr={marketplaceAddr}
+            isModalVisible={isModalVisible}
+            setIsModalVisible={setIsModalVisible}
           />
-          <Route path="/my-nfts" element={<MyNFTs />} />
-        </Routes>
-        <MintNFT
-          marketplaceAddr={marketplaceAddr}
-          isModalVisible={isModalVisible}
-          setIsModalVisible={setIsModalVisible}
-        />
-      </Layout>
-    </Router>
+        </Layout>
+      </Router>
+    </NFTProvider>
   );
 }
 
