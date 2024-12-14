@@ -1,19 +1,22 @@
 import { Layout, Modal, Form, Input, Select, Button, message } from "antd";
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { AptosClient } from "aptos";
+import NFTContext, { NFTContextType } from "../context/NFTContext";
 
 interface MarketViewProps {
-  marketplaceAddr: string;
-  isModalVisible: boolean;
-  setIsModalVisible: (visible: boolean) => void;
+  mintNFT: boolean;
 }
+
+//   marketplaceAddr: string;
+//   isModalVisible: boolean;
+//   setIsModalVisible: (visible: boolean) => void;
+// }
 const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
 
-const MintNFT: FC<MarketViewProps> = ({
-  marketplaceAddr,
-  isModalVisible,
-  setIsModalVisible,
-}) => {
+const MintNFT: FC<MarketViewProps> = ({ mintNFT }) => {
+  const { marketplaceAddr, isModalVisible, setIsModalVisible } = useContext(
+    NFTContext
+  ) as NFTContextType;
   const handleMintNFT = async (values: {
     name: string;
     description: string;
@@ -44,11 +47,11 @@ const MintNFT: FC<MarketViewProps> = ({
       const txnResponse = await (window as any).aptos.signAndSubmitTransaction({
         entryFunctionPayload,
       });
-      console.log("Transaction response ", txnResponse);
+      console.log("Transaction response ", isModalVisible, setIsModalVisible);
       await client.waitForTransaction(txnResponse.hash);
 
       message.success("NFT minted successfully!");
-      setIsModalVisible(false);
+      setIsModalVisible!(false);
     } catch (error) {
       console.error("Error minting NFT:", error);
       message.error("Failed to mint NFT.");

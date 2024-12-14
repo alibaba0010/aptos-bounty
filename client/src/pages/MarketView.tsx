@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Typography,
   Radio,
@@ -14,6 +14,7 @@ import {
 import { AptosClient } from "aptos";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import Offer from "../components/Offer";
+import NFTContext from "../context/NFTContext";
 
 const { Title } = Typography;
 const { Meta } = Card;
@@ -32,10 +33,10 @@ type NFT = {
   rarity: number;
 };
 
-interface MarketViewProps {
-  marketplaceAddr: string;
-  account: string | undefined;
-}
+// interface MarketViewProps {
+//   marketplaceAddr: string;
+//   account: string | undefined;
+// }
 
 const rarityColors: { [key: number]: string } = {
   1: "green",
@@ -55,10 +56,11 @@ const truncateAddress = (address: string, start = 6, end = 4) => {
   return `${address.slice(0, start)}...${address.slice(-end)}`;
 };
 
-const MarketView: React.FC<MarketViewProps> = ({
-  marketplaceAddr,
-  account,
-}) => {
+const MarketView = () => {
+  const { account, marketplaceAddr } = useContext(NFTContext) ?? {
+    account: null,
+  }; //+
+
   const { signAndSubmitTransaction } = useWallet();
   const [nfts, setNfts] = useState<NFT[]>([]);
   const [rarity, setRarity] = useState<"all" | number>("all");
@@ -81,7 +83,7 @@ const MarketView: React.FC<MarketViewProps> = ({
   const handleFetchNfts = async (selectedRarity: number | undefined) => {
     try {
       const response = await client.getAccountResource(
-        marketplaceAddr,
+        marketplaceAddr!,
         "0x65a3857a226af09f7f6fa4cf017f9a00718f64be692da9df4429a747faf3b78d::NFTMarketplace::Marketplace"
         // "your-marketplace-address::NFTMarketplace::Marketplace"
       );
