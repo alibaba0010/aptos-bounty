@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import { NFT } from "./NFTProvider";
 
 export type NFTContextType = {
   marketplaceAddr: string;
@@ -6,20 +7,19 @@ export type NFTContextType = {
   offerButton: boolean;
   setOfferButton: (visible: boolean) => void;
   isModalVisible: boolean;
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
   setIsModalVisible: (visible: boolean) => void;
   isBuyModalVisible: boolean;
+  nfts: NFT[];
+  selectedNft: NFT | null;
+  setSelectedNft: (nft: NFT | null) => void;
+  handleFetchNfts: (rarity?: number) => void;
+  isOfferModalVisible: boolean;
+  setIsOfferModalVisible: (visible: boolean) => void;
   setIsBuyModalVisible: (visible: boolean) => void;
+  handleMintNFTClick: () => void;
 };
 
-// const NFTContext = createContext<NFTContextType | undefined>({
-//   marketplaceAddr: "",
-//   account: undefined,
-//   offerButton: false,
-//   setOfferButton: () => {},
-//   isModalVisible: false,
-//   setIsModalVisible: () => {},
-//   isBuyModalVisible: false,
-//   setIsBuyModalVisible: () => {},
-// });
 const NFTContext = createContext<NFTContextType | undefined>(undefined);
 export default NFTContext;

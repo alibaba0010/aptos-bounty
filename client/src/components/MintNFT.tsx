@@ -13,7 +13,7 @@ interface MarketViewProps {
 // }
 const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
 
-const MintNFT: FC<MarketViewProps> = ({ mintNFT }) => {
+const MintNFT = () => {
   const { marketplaceAddr, isModalVisible, setIsModalVisible } = useContext(
     NFTContext
   ) as NFTContextType;
@@ -47,11 +47,10 @@ const MintNFT: FC<MarketViewProps> = ({ mintNFT }) => {
       const txnResponse = await (window as any).aptos.signAndSubmitTransaction({
         entryFunctionPayload,
       });
-      console.log("Transaction response ", isModalVisible, setIsModalVisible);
       await client.waitForTransaction(txnResponse.hash);
 
       message.success("NFT minted successfully!");
-      setIsModalVisible!(false);
+      setIsModalVisible(false);
     } catch (error) {
       console.error("Error minting NFT:", error);
       message.error("Failed to mint NFT.");

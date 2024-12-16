@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import {
   Typography,
   Card,
@@ -12,12 +12,12 @@ import {
 } from "antd";
 import { AptosClient } from "aptos";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import NFTContext, { NFTContextType } from "../context/NFTContext";
 
 const { Title } = Typography;
 const { Meta } = Card;
 
 const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
-// const client = new AptosClient("https://fullnode.devnet.aptoslabs.com/v1");
 
 type NFT = {
   id: number;
@@ -34,15 +34,11 @@ const MyNFTs: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [nfts, setNfts] = useState<NFT[]>([]);
   const [totalNFTs, setTotalNFTs] = useState(0);
-  const { account, signAndSubmitTransaction } = useWallet();
-  const marketplaceAddr =
-    "0x65a3857a226af09f7f6fa4cf017f9a00718f64be692da9df4429a747faf3b78d";
-  // const marketplaceAddr =
-  //   "0xb4037b16f9c0ea23f4df411e84a49278165c40dd9940ee41b41acb22caae8725";
+  const { account } = useWallet();
+  const { marketplaceAddr, isModalVisible, setIsModalVisible } = useContext(
+    NFTContext
+  ) as NFTContextType;
 
-  // const marketplaceAddr = "your-marketplace-address";
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedNft, setSelectedNft] = useState<NFT | null>(null);
   const [salePrice, setSalePrice] = useState<string>("");
 

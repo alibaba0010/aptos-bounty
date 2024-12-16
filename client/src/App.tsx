@@ -7,10 +7,8 @@ import NavBar from "./components/NavBar";
 import MarketView from "./pages/MarketView";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MyNFTs from "./pages/MyNFTs";
-import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import MintNFT from "./components/MintNFT";
 import NFTProvider from "./context/NFTProvider";
-import NFTContext from "./context/NFTContext";
 
 // const client = new AptosClient("https://fullnode.devnet.aptoslabs.com/v1");
 
@@ -20,28 +18,19 @@ import NFTContext from "./context/NFTContext";
 // make an offer and place a bidon the nft
 
 function App() {
-  const [mintNFT, setMintNFT] = useState(false);
-  const { setIsModalVisible } = useContext(NFTContext) ?? {
-    account: null,
-  };
   // Function to open the Mint NFT modal
-  const handleMintNFTClick = () => {
-    console.log("Hello world");
-    setIsModalVisible!(true);
-    setMintNFT(true);
-  };
 
   return (
     <NFTProvider>
       <Router>
         <Layout>
-          <NavBar onMintNFTClick={handleMintNFTClick} />
+          <NavBar />
           {/* Pass handleMintNFTClick to NavBar */}
           <Routes>
             <Route path="/" element={<MarketView />} />
             <Route path="/my-nfts" element={<MyNFTs />} />
           </Routes>
-          <MintNFT mintNFT={mintNFT} />
+          <MintNFT />
         </Layout>
       </Router>
     </NFTProvider>

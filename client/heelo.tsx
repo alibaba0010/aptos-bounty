@@ -56,7 +56,6 @@ const MarketView = () => {
     selectedNft,
     setSelectedNft,
     nfts,
-    setIsOfferModalVisible,
   } = useContext(NFTContext) as NFTContextType;
   useEffect(() => {
     handleFetchNfts(undefined);
@@ -68,15 +67,8 @@ const MarketView = () => {
   }, [account]);
 
   const handleBuyClick = (nft: NFT) => {
-    console.log("Offer clicked: " + nft.id);
-
     setSelectedNft(nft);
     setIsBuyModalVisible(true);
-  };
-  const handleOfferClick = (nft: NFT) => {
-    if (!account) return;
-    setSelectedNft(nft);
-    setIsOfferModalVisible(true);
   };
 
   const handleCancelBuy = () => {
@@ -189,22 +181,9 @@ const MarketView = () => {
               }}
               cover={<img alt={nft.name} src={nft.uri} />}
               actions={[
-                <Button
-                  key="buy"
-                  type="link"
-                  onClick={() => handleBuyClick(nft)}
-                >
+                <Button type="link" onClick={() => handleBuyClick(nft)}>
                   Buy
                 </Button>,
-                offerButton && (
-                  <Button
-                    key="offer"
-                    type="link"
-                    onClick={() => handleOfferClick(nft)}
-                  >
-                    Make an Offer
-                  </Button>
-                ),
               ]}
             >
               {/* Rarity Tag */}
@@ -222,6 +201,7 @@ const MarketView = () => {
               <p>{nft.description}</p>
               <p>ID: {nft.id}</p>
               <p>Owner: {truncateAddress(nft.owner)}</p>
+              {offerButton && <Offer key="offer" nft={nft} />}
             </Card>
           </Col>
         ))}
@@ -275,7 +255,6 @@ const MarketView = () => {
           </>
         )}
       </Modal>
-      {offerButton && <Offer />}
     </div>
   );
 };
