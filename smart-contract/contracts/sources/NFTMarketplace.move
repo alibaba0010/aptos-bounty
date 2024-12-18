@@ -75,7 +75,7 @@ struct NFT has store, key {
                 rarity,
                 made_ofer: false,
                 offer_price: 0,
-                offree: 0x0
+                offree: signer::address_of(account),
             };
 
             vector::push_back(&mut marketplace.nfts, new_nft);
@@ -245,8 +245,8 @@ struct NFT has store, key {
   public entry fun make_offer(account: &signer, marketplace_addr: address, nft_id: u64, offer_price: u64) acquires Marketplace {
             let marketplace = borrow_global_mut<Marketplace>(marketplace_addr);
             let nft_ref = vector::borrow_mut(&mut marketplace.nfts, nft_id);
-            assert!(price > 0, 102); // Invalid price
-nft_ref.offree = account;
+            assert!(offer_price > 0, 102); // Invalid price
+nft_ref.offree = signer::address_of(account);
 nft_ref.offer_price = offer_price;
 nft_ref.made_ofer = true;
   
