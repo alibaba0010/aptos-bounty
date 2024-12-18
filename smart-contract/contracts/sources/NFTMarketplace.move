@@ -1,7 +1,7 @@
 // TODO# 1: Define Module and Marketplace Address
 address 0x65a3857a226af09f7f6fa4cf017f9a00718f64be692da9df4429a747faf3b78d {
 
-    module NFTMarketplace {
+    module NFTMarketPlace {
         use 0x1::signer;
         use 0x1::vector;
         use 0x1::coin;
