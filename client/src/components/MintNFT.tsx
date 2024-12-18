@@ -3,14 +3,6 @@ import { FC, useContext } from "react";
 import { AptosClient } from "aptos";
 import NFTContext, { NFTContextType } from "../context/NFTContext";
 
-interface MarketViewProps {
-  mintNFT: boolean;
-}
-
-//   marketplaceAddr: string;
-//   isModalVisible: boolean;
-//   setIsModalVisible: (visible: boolean) => void;
-// }
 const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
 
 const MintNFT = () => {
@@ -25,7 +17,6 @@ const MintNFT = () => {
   }) => {
     try {
       const nameVector = Array.from(new TextEncoder().encode(values.name));
-      console.log("Name vector ", nameVector);
       const descriptionVector = Array.from(
         new TextEncoder().encode(values.description)
       );
@@ -35,15 +26,8 @@ const MintNFT = () => {
         type: "entry_function_payload",
         function: `${marketplaceAddr}::NFTMarketplace::mint_nft`,
         type_arguments: [],
-        arguments: [
-          marketplaceAddr,
-          nameVector,
-          descriptionVector,
-          uriVector,
-          values.rarity,
-        ],
+        arguments: [nameVector, descriptionVector, uriVector, values.rarity],
       };
-      console.log(entryFunctionPayload.arguments[0]);
       const txnResponse = await (window as any).aptos.signAndSubmitTransaction({
         entryFunctionPayload,
       });

@@ -17,6 +17,8 @@ struct NFT has store, key {
             price: u64,
             for_sale: bool,
             rarity: u8  // 1 for common, 2 for rare, 3 for epic, etc.
+            offer_price: u64,
+            offree: address
         }
 
         // TODO# 3: Define Marketplace Structure
@@ -28,6 +30,13 @@ struct NFT has store, key {
   struct ListedNFT has copy, drop {
             id: u64,
             price: u64,
+            rarity: u8
+        }
+        //TODO: Offers Structure
+  struct OfferNFT has copy, drop {
+            id: u64,
+            offree: address,
+            offer_price: u64,
             rarity: u8
         }
 
@@ -61,7 +70,9 @@ struct NFT has store, key {
                 uri,
                 price: 0,
                 for_sale: false,
-                rarity
+                rarity,
+                offer_price: 0,
+                offree: 0x
             };
 
             vector::push_back(&mut marketplace.nfts, new_nft);
@@ -227,5 +238,22 @@ struct NFT has store, key {
 
             nft_ids
         }
+        //TODO 21: Make an offer to a NFT
+  public entry fun make_offer(account: &signer, marketplace_addr: address, nft_id: u64, offer_price: u64) acquires Marketplace {
+            let marketplace = borrow_global_mut<Marketplace>(marketplace_addr);
+            let nft_ref = vector::borrow_mut(&mut marketplace.nfts, nft_id);
+            assert!(price > 0, 102); // Invalid price
+nft_ref.offree = account
+nft_ref.offer_price: offer_price,
+  
+  }
+  //TOD0 22: Show Offers  
+  #[view]
+  public fun show_offers(marketplace_addr: address, nft_id: u64): vector<OfferNFT> acquires Marketplace {}
+            let marketplace = borrow_global<Marketplace>(marketplace_addr);
+            // intialize offerNFT struct
+            let nfts_for_sale = vector::empty<OfferNFT>();
+
+   
     }
 }
