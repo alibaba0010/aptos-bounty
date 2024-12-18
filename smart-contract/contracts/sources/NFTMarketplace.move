@@ -16,7 +16,8 @@ struct NFT has store, key {
             uri: vector<u8>,
             price: u64,
             for_sale: bool,
-            rarity: u8  // 1 for common, 2 for rare, 3 for epic, etc.
+            rarity: u8,  // 1 for common, 2 for rare, 3 for epic, etc.
+            made_ofer: bool,
             offer_price: u64,
             offree: address
         }
@@ -36,6 +37,7 @@ struct NFT has store, key {
   struct OfferNFT has copy, drop {
             id: u64,
             offree: address,
+            price: u64,
             offer_price: u64,
             rarity: u8
         }
@@ -71,8 +73,9 @@ struct NFT has store, key {
                 price: 0,
                 for_sale: false,
                 rarity,
+                made_ofer: false,
                 offer_price: 0,
-                offree: 0x
+                offree: 0x0
             };
 
             vector::push_back(&mut marketplace.nfts, new_nft);
@@ -243,17 +246,31 @@ struct NFT has store, key {
             let marketplace = borrow_global_mut<Marketplace>(marketplace_addr);
             let nft_ref = vector::borrow_mut(&mut marketplace.nfts, nft_id);
             assert!(price > 0, 102); // Invalid price
-nft_ref.offree = account
-nft_ref.offer_price: offer_price,
+nft_ref.offree = account;
+nft_ref.offer_price = offer_price;
+nft_ref.made_ofer = true;
   
   }
   //TOD0 22: Show Offers  
   #[view]
-  public fun show_offers(marketplace_addr: address, nft_id: u64): vector<OfferNFT> acquires Marketplace {}
+  public fun show_offers(marketplace_addr: address, limit: u64, offset: u64): vector<OfferNFT> acquires Marketplace {
             let marketplace = borrow_global<Marketplace>(marketplace_addr);
             // intialize offerNFT struct
-            let nfts_for_sale = vector::empty<OfferNFT>();
+            let offer_nfts = vector::empty<OfferNFT>();
+ let nfts_len = vector::length(&marketplace.nfts);
+            let end = min(offset + limit, nfts_len);
+            let mut_i = offset;
+  while (mut_i < end) {
+                let nft = vector::borrow(&marketplace.nfts, mut_i);
+                if (nft.made_ofer) {
+                    let offer_nft = OfferNFT { id: nft.id,offree: nft.offree,offer_price: nft.offer_price, price: nft.price, rarity: nft.rarity };
+                    vector::push_back(&mut offer_nfts, offer_nft);
+                };
+                mut_i = mut_i + 1;
+            };
 
+            offer_nfts
    
+    }
     }
 }
