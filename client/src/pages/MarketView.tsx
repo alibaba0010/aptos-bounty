@@ -43,7 +43,6 @@ const truncateAddress = (address: string, start = 6, end = 4) => {
 const MarketView = () => {
   const { signAndSubmitTransaction } = useWallet();
   const [rarity, setRarity] = useState<"all" | number>("all");
-  const [offerButton, setOfferButton] = useState(false);
   const pageSize = 8;
 
   const [isBuyModalVisible, setIsBuyModalVisible] = useState(false);
@@ -55,17 +54,13 @@ const MarketView = () => {
     handleFetchNfts,
     selectedNft,
     setSelectedNft,
+    offerButton,
     nfts,
     setIsOfferModalVisible,
   } = useContext(NFTContext) as NFTContextType;
   useEffect(() => {
     handleFetchNfts(undefined);
-    if (account !== marketplaceAddr) {
-      setOfferButton(true);
-    } else {
-      setOfferButton(false);
-    }
-  }, [account]);
+  }, []);
 
   const handleBuyClick = (nft: NFT) => {
     console.log("Offer clicked: " + nft.id);

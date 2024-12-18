@@ -19,6 +19,7 @@ import {
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import NFTContext, { NFTContextType } from "../context/NFTContext";
+import Offer from "./Offer";
 
 const { Header } = Layout;
 const { Text } = Typography;
@@ -33,7 +34,9 @@ const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
 const NavBar = () => {
   const { connected, account, network, disconnect } = useWallet(); // Add disconnect here
   const [balance, setBalance] = useState<number | null>(null);
-  const { handleMintNFTClick } = useContext(NFTContext) as NFTContextType;
+  const { handleMintNFTClick, offerButton } = useContext(
+    NFTContext
+  ) as NFTContextType;
   useEffect(() => {
     const fetchBalance = async () => {
       if (account) {
@@ -107,6 +110,16 @@ const NavBar = () => {
           <Menu.Item key="mint-nft" onClick={handleMintNFTClick}>
             <span style={{ color: "#fff" }}>Mint NFT</span>
           </Menu.Item>
+          {!offerButton && (
+            <Menu.Item key="offers" onClick={handleMintNFTClick}>
+              <Offer />
+            </Menu.Item>
+          )}
+          {/* {!offerButton && (
+            <Menu.Item key="offers" onClick={handleMintNFTClick}>
+              <span style={{ color: "#fff" }}>Offers....{offerLength}</span>
+            </Menu.Item>
+          )} */}
         </Menu>
       </div>
 

@@ -33,7 +33,7 @@ const MintNFT = () => {
 
       const entryFunctionPayload = {
         type: "entry_function_payload",
-        function: `${marketplaceAddr}::NFTMarketplace::mint_Nft`,
+        function: `${marketplaceAddr}::NFTMarketplace::mint_nft`,
         type_arguments: [],
         arguments: [
           marketplaceAddr,

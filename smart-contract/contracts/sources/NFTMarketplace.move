@@ -66,24 +66,7 @@ struct NFT has store, key {
 
             vector::push_back(&mut marketplace.nfts, new_nft);
         }
-        //   public entry fun mint_Nft(account: &signer, marketplace_addr: address,name: vector<u8>, description: vector<u8>, uri: vector<u8>, rarity: u8) acquires Marketplace {
-        //     let marketplace = borrow_global_mut<Marketplace>(signer::address_of(account));// signer::address_of(account)
-        //     let nft_id = vector::length(&marketplace.nfts);
-
-        //     let new_nft = NFT {
-        //         id: nft_id,
-        //         owner: signer::address_of(account),
-        //         name,
-        //         description,
-        //         uri,
-        //         price: 0,
-        //         for_sale: false,
-        //         rarity
-        //     };
-
-        //     vector::push_back(&mut marketplace.nfts, new_nft);
-        // }
-
+ 
         // TODO# 9: View NFT Details
  #[view]
         public fun get_nft_details(marketplace_addr: address, nft_id: u64): (u64, address, vector<u8>, vector<u8>, vector<u8>, u64, bool, u8) acquires Marketplace {

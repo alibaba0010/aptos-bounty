@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 import NFTContext from "./NFTContext";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { AptosClient } from "aptos";
@@ -25,10 +25,20 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
   const [nfts, setNfts] = useState<NFT[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedNft, setSelectedNft] = useState<NFT | null>(null);
+  const [offerLength, setOfferLength] = useState<number>(0);
+  const { account } = useWallet();
 
+  useEffect(() => {
+    if (account) {
+      if (account.address === marketplaceAddr) {
+        setOfferButton(false);
+      } else {
+        setOfferButton(true);
+      }
+    }
+  }, [account]);
   const marketplaceAddr =
     "0x65a3857a226af09f7f6fa4cf017f9a00718f64be692da9df4429a747faf3b78d";
-  const { account } = useWallet();
   const handleMintNFTClick = () => {
     setIsModalVisible(true);
   };
@@ -97,6 +107,8 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
         setSelectedNft,
         setIsBuyModalVisible,
         handleMintNFTClick,
+        offerLength,
+        setOfferLength,
       }}
     >
       {children}

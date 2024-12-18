@@ -1,13 +1,18 @@
 import React, { useContext, useState } from "react";
-import { Button, Modal, Input, Typography } from "antd";
+import { Button, Modal, Input, Typography, Badge } from "antd";
 import NFTContext, { NFTContextType } from "../context/NFTContext";
 import { NFT } from "../context/NFTProvider";
 
 const { Text } = Typography;
 
 const Offer = () => {
-  const { isOfferModalVisible, setIsOfferModalVisible, account, selectedNft } =
-    useContext(NFTContext) as NFTContextType;
+  const {
+    isOfferModalVisible,
+    setIsOfferModalVisible,
+    offerButton,
+    selectedNft,
+    offerLength,
+  } = useContext(NFTContext) as NFTContextType;
 
   const [offerPrice, setOfferPrice] = useState<string>("");
 
@@ -24,10 +29,17 @@ const Offer = () => {
     // Add your offer submission logic here
     handleModalClose();
   };
-
+  console.log("Modal closed: ", offerLength);
   return (
     <>
-      <p>Make An Offer</p>
+      {!offerButton && (
+        <div className="flex items-center justify-between px-4 py-2 text-sm cursor-pointer hover:bg-gray-700 transition-colors duration-200">
+          <span className="text-white">Offers</span>
+          {offerLength >= 0 && (
+            <Badge className="ml-2 bg-blue-500 text-white">{offerLength}</Badge>
+          )}
+        </div>
+      )}
       {isOfferModalVisible && (
         <Modal
           title="Make An Offer"

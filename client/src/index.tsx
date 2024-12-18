@@ -4,16 +4,19 @@ import "./index.css";
 import App from "./App";
 import { AptosWalletAdapterProvider } from "@aptos-labs/wallet-adapter-react";
 import { PetraWallet } from "petra-plugin-wallet-adapter";
+import NFTProvider from "./context/NFTProvider";
 const wallets = [new PetraWallet()];
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <StrictMode>
-    {" "}
-    <AptosWalletAdapterProvider plugins={wallets} autoConnect={true}>
+    <NFTProvider>
       {" "}
-      <App />{" "}
-    </AptosWalletAdapterProvider>{" "}
+      <AptosWalletAdapterProvider plugins={wallets} autoConnect={true}>
+        {" "}
+        <App />{" "}
+      </AptosWalletAdapterProvider>{" "}
+    </NFTProvider>
   </StrictMode>
 );
