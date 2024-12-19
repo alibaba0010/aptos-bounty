@@ -46,10 +46,10 @@ const MyNFTs: React.FC = () => {
     if (!account) return;
 
     try {
-      console.log("Fetching NFT IDs for owner:", account.address);
+      console.log("Fetching NFT IDs for owner:", marketplaceAddr);
 
       const nftIdsResponse = await client.view({
-        function: `${marketplaceAddr}::NFTMarketPlace::get_all_nfts_for_owner`,
+        function: `${marketplaceAddr}::NFTMarketplace::get_all_nfts_for_owner`,
         arguments: [marketplaceAddr, account.address, "100", "0"],
         type_arguments: [],
       });
@@ -71,7 +71,7 @@ const MyNFTs: React.FC = () => {
           nftIds.map(async (id) => {
             try {
               const nftDetails = await client.view({
-                function: `${marketplaceAddr}::NFTMarketPlace::get_nft_details`,
+                function: `${marketplaceAddr}::NFTMarketplace::get_nft_details`,
                 arguments: [marketplaceAddr, id],
                 type_arguments: [],
               });
@@ -150,7 +150,7 @@ const MyNFTs: React.FC = () => {
 
       const entryFunctionPayload = {
         type: "entry_function_payload",
-        function: `${marketplaceAddr}::NFTMarketPlace::list_for_sale`,
+        function: `${marketplaceAddr}::NFTMarketplace::list_for_sale`,
         type_arguments: [],
         arguments: [
           marketplaceAddr,

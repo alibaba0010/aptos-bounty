@@ -21,10 +21,14 @@ const Offer = () => {
     setOfferPrice("");
   };
 
-  const handleOfferSubmit = () => {
+  const handleOfferSubmit = async () => {
+    if (!selectedNft || !offerPrice) return;
+    console.log("Offer Price: ", offerPrice);
+    console.log("Offer Selected: ", selectedNft.price);
+
     // Implement the logic to submit the offer
     console.log(
-      `Submitting offer of ${offerPrice} APT for NFT ${selectedNft?.id}`
+      `Submitting offer of ${offerPrice} APT for NFT ${selectedNft.id}`
     );
     // Add your offer submission logic here
     handleModalClose();

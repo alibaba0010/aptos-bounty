@@ -17,6 +17,7 @@ const MintNFT = () => {
   }) => {
     try {
       const nameVector = Array.from(new TextEncoder().encode(values.name));
+      console.log("Name vector ", nameVector);
       const descriptionVector = Array.from(
         new TextEncoder().encode(values.description)
       );
@@ -24,13 +25,14 @@ const MintNFT = () => {
 
       const entryFunctionPayload = {
         type: "entry_function_payload",
-        function: `${marketplaceAddr}::NFTMarketPlace::mint_nft`,
+        function: `${marketplaceAddr}::NFTMarketplace::mint_nft`,
         type_arguments: [],
         arguments: [nameVector, descriptionVector, uriVector, values.rarity],
       };
-      const txnResponse = await (window as any).aptos.signAndSubmitTransaction({
-        entryFunctionPayload,
-      });
+
+      const txnResponse = await (window as any).aptos.signAndSubmitTransaction(
+        entryFunctionPayload
+      );
       await client.waitForTransaction(txnResponse.hash);
 
       message.success("NFT minted successfully!");

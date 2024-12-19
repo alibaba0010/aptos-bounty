@@ -84,7 +84,7 @@ const MarketView = () => {
 
       const entryFunctionPayload = {
         type: "entry_function_payload",
-        function: `${marketplaceAddr}::NFTMarketPlace::purchase_nft`,
+        function: `${marketplaceAddr}::NFTMarketplace::purchase_nft`,
         type_arguments: [],
         arguments: [
           marketplaceAddr,

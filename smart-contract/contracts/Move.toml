@@ -1,10 +1,10 @@
 [package]
-name = "NFTMarketPlace"
+name = "NFTMarketplace"
 version = "0.1.1"
 upgrade_policy = "compatible"
 
 [addresses]
-NFTMarketPlace = "0x65a3857a226af09f7f6fa4cf017f9a00718f64be692da9df4429a747faf3b78d"
+NFTMarketplace = "0x3ce691ae174233fc2470a947cf86a9647f4e282d23c568102d0f3a5a50bea008"
 aptos_framework = "0x1"
 primitives = "0xCAFE"
 
