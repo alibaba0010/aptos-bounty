@@ -44,6 +44,20 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
   };
   const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
 
+  const handleDisplayOffer = async () => {
+    if (!account) return;
+    try {
+      const getOffers = await client.view({
+        function: `${marketplaceAddr}::NFTMarketplace::show_offers`,
+        arguments: [marketplaceAddr, "100", "0"],
+        type_arguments: [],
+      });
+      console.log("Get offers: ", getOffers);
+    } catch (error) {
+      console.error("Error occured when getting offers:", error);
+      message.error("Failed to get offers.");
+    }
+  };
   const handleFetchNfts = async (selectedRarity: number | undefined) => {
     try {
       const response = await client.getAccountResource(
@@ -108,6 +122,7 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
         handleMintNFTClick,
         offerLength,
         setOfferLength,
+        handleDisplayOffer,
       }}
     >
       {children}

@@ -21,6 +21,7 @@ export type NFTContextType = {
   handleMintNFTClick: () => void;
   offerLength: number;
   setOfferLength: (value: number) => void;
+  handleDisplayOffer: () => void;
 };
 
 const NFTContext = createContext<NFTContextType | undefined>(undefined);

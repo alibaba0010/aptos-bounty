@@ -58,20 +58,6 @@ const Offer = () => {
     }
   };
 
-  const handleDisplayOffer = async () => {
-    if (!account) return;
-    try {
-      const getOffers = await client.view({
-        function: `${marketplaceAddr}::NFTMarketplace::show_offers`,
-        arguments: [marketplaceAddr, "100", "0"],
-        type_arguments: [],
-      });
-      console.log("Get offers: ", getOffers);
-    } catch (error) {
-      console.error("Error occured when getting offers:", error);
-      message.error("Failed to get offers.");
-    }
-  };
   return (
     <>
       {!offerButton && (
