@@ -46,8 +46,6 @@ const MyNFTs: React.FC = () => {
     if (!account) return;
 
     try {
-      console.log("Fetching NFT IDs for owner:", marketplaceAddr);
-
       const nftIdsResponse = await client.view({
         function: `${marketplaceAddr}::NFTMarketplace::get_all_nfts_for_owner`,
         arguments: [marketplaceAddr, account.address, "100", "0"],

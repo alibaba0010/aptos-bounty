@@ -1,9 +1,12 @@
 import React, { useContext, useState } from "react";
-import { Button, Modal, Input, Typography, Badge } from "antd";
+import { Button, Modal, Input, Typography, Badge, message } from "antd";
 import NFTContext, { NFTContextType } from "../context/NFTContext";
 import { NFT } from "../context/NFTProvider";
+import { AptosClient } from "aptos";
+import { Account } from "@thirdweb-dev/sdk";
 
 const { Text } = Typography;
+const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
 
 const Offer = () => {
   const {
@@ -12,6 +15,8 @@ const Offer = () => {
     offerButton,
     selectedNft,
     offerLength,
+    marketplaceAddr,
+    account,
   } = useContext(NFTContext) as NFTContextType;
 
   const [offerPrice, setOfferPrice] = useState<string>("");
@@ -27,13 +32,46 @@ const Offer = () => {
     console.log("Offer Selected: ", selectedNft.price);
 
     // Implement the logic to submit the offer
-    console.log(
-      `Submitting offer of ${offerPrice} APT for NFT ${selectedNft.id}`
-    );
-    // Add your offer submission logic here
-    handleModalClose();
+    try {
+      const priceInOctas = parseFloat(offerPrice) * 100000000;
+
+      const entryFunctionPayload = {
+        type: "entry_function_payload",
+        function: `${marketplaceAddr}::NFTMarketplace::make_offer`,
+        type_arguments: [],
+        arguments: [
+          marketplaceAddr,
+          selectedNft.id.toString(),
+          priceInOctas.toString(),
+        ],
+      };
+      const response = await (window as any).aptos.signAndSubmitTransaction(
+        entryFunctionPayload
+      );
+      await client.waitForTransaction(response.hash);
+      message.success("Offer for NFT submitted successfully!");
+
+      handleModalClose();
+    } catch (error) {
+      console.error("Error occured when making an offer for NFT:", error);
+      message.error("Failed to make an offer for NFT.");
+    }
   };
-  console.log("Modal closed: ", offerLength);
+
+  const handleDisplayOffer = async () => {
+    if (!account) return;
+    try {
+      const getOffers = await client.view({
+        function: `${marketplaceAddr}::NFTMarketplace::show_offers`,
+        arguments: [marketplaceAddr, "100", "0"],
+        type_arguments: [],
+      });
+      console.log("Get offers: ", getOffers);
+    } catch (error) {
+      console.error("Error occured when getting offers:", error);
+      message.error("Failed to get offers.");
+    }
+  };
   return (
     <>
       {!offerButton && (
