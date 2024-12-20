@@ -12,11 +12,7 @@ import { WalletSelector } from "@aptos-labs/wallet-adapter-ant-design";
 import "@aptos-labs/wallet-adapter-ant-design/dist/index.css";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { AptosClient } from "aptos";
-import {
-  AccountBookOutlined,
-  DownOutlined,
-  LogoutOutlined,
-} from "@ant-design/icons";
+import { DownOutlined, LogoutOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import NFTContext, { NFTContextType } from "../context/NFTContext";
 import Offer from "./Offer";
@@ -31,7 +27,7 @@ const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
 //   onMintNFTClick: () => void;
 // }
 
-const NavBar = () => {
+const NavBar = ({ offer }: { offer: boolean }) => {
   const { connected, account, network, disconnect } = useWallet(); // Add disconnect here
   const [balance, setBalance] = useState<number | null>(null);
   const { handleMintNFTClick, offerButton, handleDisplayOffer } = useContext(
@@ -112,7 +108,7 @@ const NavBar = () => {
           </Menu.Item>
           {!offerButton && (
             <Menu.Item key="offers" onClick={handleDisplayOffer}>
-              <Offer />
+              <Offer offer={offer} />
             </Menu.Item>
           )}
         </Menu>

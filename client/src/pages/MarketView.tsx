@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   Typography,
   Radio,
@@ -41,7 +41,7 @@ const truncateAddress = (address: string, start = 6, end = 4) => {
   return `${address.slice(0, start)}...${address.slice(-end)}`;
 };
 
-const MarketView = () => {
+const MarketView = ({ offer }: { offer: boolean }) => {
   const { signAndSubmitTransaction } = useWallet();
   const [rarity, setRarity] = useState<"all" | number>("all");
   const pageSize = 8;
@@ -61,6 +61,7 @@ const MarketView = () => {
   } = useContext(NFTContext) as NFTContextType;
   useEffect(() => {
     handleFetchNfts(undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleBuyClick = (nft: NFT) => {
@@ -271,7 +272,7 @@ const MarketView = () => {
           </>
         )}
       </Modal>
-      {offerButton && <Offer />}
+      {offerButton && <Offer offer={offer} />}
     </div>
   );
 };

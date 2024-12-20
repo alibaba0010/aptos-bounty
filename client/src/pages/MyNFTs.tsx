@@ -35,10 +35,9 @@ const MyNFTs: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [nfts, setNfts] = useState<NFT[]>([]);
   const [totalNFTs, setTotalNFTs] = useState(0);
+  const [isSellModalVisible, setIsSellModalVisible] = useState(false);
   const { account } = useWallet();
-  const { marketplaceAddr, isModalVisible, setIsModalVisible } = useContext(
-    NFTContext
-  ) as NFTContextType;
+  const { marketplaceAddr } = useContext(NFTContext) as NFTContextType;
 
   const [selectedNft, setSelectedNft] = useState<NFT | null>(null);
   const [salePrice, setSalePrice] = useState<string>("");
@@ -132,11 +131,11 @@ const MyNFTs: React.FC = () => {
 
   const handleSellClick = (nft: NFT) => {
     setSelectedNft(nft);
-    setIsModalVisible(true);
+    setIsSellModalVisible(true);
   };
 
   const handleCancel = () => {
-    setIsModalVisible(false);
+    setIsSellModalVisible(false);
     setSelectedNft(null);
     setSalePrice("");
   };
@@ -165,7 +164,7 @@ const MyNFTs: React.FC = () => {
       await client.waitForTransaction(response.hash);
 
       message.success("NFT listed for sale successfully!");
-      setIsModalVisible(false);
+      setIsSellModalVisible(false);
       setSalePrice("");
       fetchUserNFTs();
     } catch (error) {
@@ -263,7 +262,7 @@ const MyNFTs: React.FC = () => {
 
       <Modal
         title="Sell NFT"
-        open={isModalVisible}
+        open={isSellModalVisible}
         onCancel={handleCancel}
         footer={[
           <Button key="cancel" onClick={handleCancel}>

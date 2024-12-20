@@ -29,7 +29,11 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
   const { account } = useWallet();
 
   useEffect(() => {
+    console.log("Account: " + account);
     if (account) {
+      console.log(
+        `Account ${account} with market place address ${marketplaceAddr}`
+      );
       if (account.address === marketplaceAddr) {
         setOfferButton(false);
       } else {

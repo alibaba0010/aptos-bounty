@@ -1,14 +1,13 @@
 import React, { useContext, useState } from "react";
 import { Button, Modal, Input, Typography, Badge, message } from "antd";
 import NFTContext, { NFTContextType } from "../context/NFTContext";
-import { NFT } from "../context/NFTProvider";
 import { AptosClient } from "aptos";
 
 const { Text } = Typography;
 const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
 // const client = new AptosClient("https://fullnode.devnet.aptoslabs.com/v1");
 
-const Offer = () => {
+const Offer = ({ offer }: { offer: boolean }) => {
   const {
     isOfferModalVisible,
     setIsOfferModalVisible,
@@ -16,7 +15,6 @@ const Offer = () => {
     selectedNft,
     offerLength,
     marketplaceAddr,
-    account,
   } = useContext(NFTContext) as NFTContextType;
 
   const [offerPrice, setOfferPrice] = useState<string>("");

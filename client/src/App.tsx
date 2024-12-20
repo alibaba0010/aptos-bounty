@@ -1,17 +1,16 @@
 // src/App.tsx
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./App.css";
-import { Layout, Modal, Form, Input, Select, Button, message } from "antd";
+import { Layout } from "antd";
 import NavBar from "./components/NavBar";
 import MarketView from "./pages/MarketView";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MyNFTs from "./pages/MyNFTs";
 import MintNFT from "./components/MintNFT";
-import DisplayOffer from "./components/DisplayOffer";
 import NFTContext, { NFTContextType } from "./context/NFTContext";
 import Offer from "./components/Offer";
-
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
 // TODOs
 // 1. configure marketplace address to be gotten from web
@@ -19,17 +18,31 @@ import Offer from "./components/Offer";
 // make an offer and place a bidon the nft
 
 function App() {
+  const [offer, setOffer] = useState(false);
+  const { account } = useWallet();
   // Function to open the Mint NFT modal
-  const { offerButton } = useContext(NFTContext) as NFTContextType;
+  const { marketplaceAddr } = useContext(NFTContext) as NFTContextType;
+  useEffect(() => {
+    console.log("Account: " + account);
+    if (account) {
+      if (account.address !== marketplaceAddr) {
+        setOffer(false);
+      } else {
+        setOffer(true);
+      }
+    } else {
+      return;
+    }
+  }, [account, marketplaceAddr]);
   return (
     <Router>
       <Layout>
-        <NavBar />
+        <NavBar offer={offer} />
         {/* Pass handleMintNFTClick to NavBar */}
         <Routes>
-          <Route path="/" element={<MarketView />} />
+          <Route path="/" element={<MarketView offer={offer} />} />
           <Route path="/my-nfts" element={<MyNFTs />} />
-          {!offerButton && <Route path="/offers" element={<Offer />} />}
+          {offer && <Route path="/offers" element={<Offer offer={offer} />} />}
         </Routes>
         <MintNFT />
       </Layout>
