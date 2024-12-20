@@ -1,6 +1,6 @@
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { AptosClient } from "aptos";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NFTContext, { NFTContextType } from "../context/NFTContext";
 import { NFT } from "../context/NFTProvider";
 import {
@@ -22,6 +22,8 @@ const { Meta } = Card;
 const DisplayOffer = () => {
   const { marketplaceAddr } = useContext(NFTContext) as NFTContextType;
   const { account } = useWallet();
+  const [offerNFTs, setOfferNfts] = useState<NFT[]>([]);
+
   const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
 
   const truncateAddress = (address: string, start = 6, end = 4) => {
@@ -54,6 +56,7 @@ const DisplayOffer = () => {
         offer_price: nft.price / 100000000,
       }));
       console.log("Decoded NFTs: ", decodedNfts);
+      setOfferNfts(decodedNfts);
     } catch (error) {
       console.error("Error occured when getting offers:", error);
       message.error("Failed to get offers.");

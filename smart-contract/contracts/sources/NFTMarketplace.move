@@ -36,10 +36,12 @@ struct NFT has store, key {
         //TODO: Offers Structure
   struct OfferNFT has copy, drop {
             id: u64,
+            name: string,
             offree: address,
             price: u64,
             offer_price: u64,
             rarity: u8
+            // added name
         }
 
         // TODO# 5: Set Marketplace Fee
