@@ -3,8 +3,8 @@ import { FC, useContext } from "react";
 import { AptosClient } from "aptos";
 import NFTContext, { NFTContextType } from "../context/NFTContext";
 
-// const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
-const client = new AptosClient("https://fullnode.devnet.aptoslabs.com/v1");
+const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
+// const client = new AptosClient("https://fullnode.devnet.aptoslabs.com/v1");
 
 const MintNFT = () => {
   const { marketplaceAddr, isModalVisible, setIsModalVisible } = useContext(
