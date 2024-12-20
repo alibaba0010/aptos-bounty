@@ -6,7 +6,8 @@ import { AptosClient } from "aptos";
 import { Account } from "@thirdweb-dev/sdk";
 
 const { Text } = Typography;
-const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
+// const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
+const client = new AptosClient("https://fullnode.devnet.aptoslabs.com/v1");
 
 const Offer = () => {
   const {

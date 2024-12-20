@@ -42,7 +42,8 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
   const handleMintNFTClick = () => {
     setIsModalVisible(true);
   };
-  const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
+  // const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
+  const client = new AptosClient("https://fullnode.devnet.aptoslabs.com/v1");
 
   const handleDisplayOffer = async () => {
     if (!account) return;

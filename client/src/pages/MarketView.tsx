@@ -20,7 +20,8 @@ import { NFT } from "../context/NFTProvider";
 const { Title } = Typography;
 const { Meta } = Card;
 
-const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
+// const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
+const client = new AptosClient("https://fullnode.devnet.aptoslabs.com/v1");
 
 const rarityColors: { [key: number]: string } = {
   1: "green",

@@ -24,8 +24,8 @@ import Offer from "./Offer";
 const { Header } = Layout;
 const { Text } = Typography;
 
-const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
-// const client = new AptosClient("https://fullnode.devnet.aptoslabs.com/v1");
+// const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
+const client = new AptosClient("https://fullnode.devnet.aptoslabs.com/v1");
 
 // interface NavBarProps {
 //   onMintNFTClick: () => void;

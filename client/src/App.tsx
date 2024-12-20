@@ -12,7 +12,6 @@ import DisplayOffer from "./components/DisplayOffer";
 import NFTContext, { NFTContextType } from "./context/NFTContext";
 import Offer from "./components/Offer";
 
-// const client = new AptosClient("https://fullnode.devnet.aptoslabs.com/v1");
 
 // TODOs
 // 1. configure marketplace address to be gotten from web
