@@ -39,7 +39,6 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
         marketplaceAddr,
         "0x3ce691ae174233fc2470a947cf86a9647f4e282d23c568102d0f3a5a50bea008::NFTMarketplace::Marketplace"
       );
-      console.log("Response: ", response);
       const nftList = (response.data as { nfts: NFT[] }).nfts;
 
       const hexToUint8Array = (hexString: string): Uint8Array => {
@@ -49,7 +48,6 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
         }
         return bytes;
       };
-
       const decodedNfts = nftList.map((nft) => ({
         ...nft,
         name: new TextDecoder().decode(hexToUint8Array(nft.name.slice(2))),

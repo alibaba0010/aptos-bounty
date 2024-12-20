@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Button, Modal, Input, Typography, Badge, message } from "antd";
+import { Button, Modal, Input, Typography, message } from "antd";
 import NFTContext, { NFTContextType } from "../context/NFTContext";
 import { AptosClient } from "aptos";
 
