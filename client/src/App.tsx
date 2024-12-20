@@ -11,6 +11,7 @@ import MintNFT from "./components/MintNFT";
 import NFTContext, { NFTContextType } from "./context/NFTContext";
 import Offer from "./components/Offer";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import DisplayOffer from "./components/DisplayOffer";
 
 // TODOs
 // 1. configure marketplace address to be gotten from web
@@ -23,7 +24,6 @@ function App() {
   // Function to open the Mint NFT modal
   const { marketplaceAddr } = useContext(NFTContext) as NFTContextType;
   useEffect(() => {
-    console.log("Account: " + account);
     if (account) {
       if (account.address !== marketplaceAddr) {
         setOffer(false);
@@ -42,9 +42,10 @@ function App() {
         <Routes>
           <Route path="/" element={<MarketView offer={offer} />} />
           <Route path="/my-nfts" element={<MyNFTs />} />
-          {offer && <Route path="/offers" element={<Offer offer={offer} />} />}
+          {offer && <Route path="/offers" element={<DisplayOffer />} />}
         </Routes>
         <MintNFT />
+        <Offer offer={offer} />
       </Layout>
     </Router>
   );

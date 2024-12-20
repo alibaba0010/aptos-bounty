@@ -16,6 +16,7 @@ import { DownOutlined, LogoutOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import NFTContext, { NFTContextType } from "../context/NFTContext";
 import Offer from "./Offer";
+import DisplayOffer from "./DisplayOffer";
 
 const { Header } = Layout;
 const { Text } = Typography;
@@ -30,9 +31,7 @@ const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
 const NavBar = ({ offer }: { offer: boolean }) => {
   const { connected, account, network, disconnect } = useWallet(); // Add disconnect here
   const [balance, setBalance] = useState<number | null>(null);
-  const { handleMintNFTClick, offerButton, handleDisplayOffer } = useContext(
-    NFTContext
-  ) as NFTContextType;
+  const { handleMintNFTClick } = useContext(NFTContext) as NFTContextType;
   useEffect(() => {
     const fetchBalance = async () => {
       if (account) {
@@ -85,13 +84,13 @@ const NavBar = ({ offer }: { offer: boolean }) => {
         <img
           src="/Aptos_Primary_WHT.png"
           alt="Aptos Logo"
-          style={{ height: "30px", marginRight: 16 }}
+          style={{ height: "30px", marginRight: 10 }}
         />
         <Menu
           theme="dark"
           mode="horizontal"
           defaultSelectedKeys={["marketplace"]}
-          style={{ backgroundColor: "#001529" }}
+          style={{ backgroundColor: "#001529", width: "400px" }}
         >
           <Menu.Item key="marketplace">
             <Link to="/" style={{ color: "#fff" }}>
@@ -106,9 +105,11 @@ const NavBar = ({ offer }: { offer: boolean }) => {
           <Menu.Item key="mint-nft" onClick={handleMintNFTClick}>
             <span style={{ color: "#fff" }}>Mint NFT</span>
           </Menu.Item>
-          {!offerButton && (
-            <Menu.Item key="offers" onClick={handleDisplayOffer}>
-              <Offer offer={offer} />
+          {offer && (
+            <Menu.Item key="offers">
+              <Link to="/offers" style={{ color: "#fff" }}>
+                Offers
+              </Link>
             </Menu.Item>
           )}
         </Menu>

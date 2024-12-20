@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 import NFTContext from "./NFTContext";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { AptosClient } from "aptos";
@@ -18,7 +18,6 @@ export type NFT = {
   rarity: number;
 };
 const NFTProvider: FC<NFTProps> = ({ children }) => {
-  const [offerButton, setOfferButton] = useState(false);
   const [isBuyModalVisible, setIsBuyModalVisible] = useState(false);
   const [isOfferModalVisible, setIsOfferModalVisible] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -26,21 +25,7 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedNft, setSelectedNft] = useState<NFT | null>(null);
   const [offerLength, setOfferLength] = useState<number>(0);
-  const { account } = useWallet();
 
-  useEffect(() => {
-    console.log("Account: " + account);
-    if (account) {
-      console.log(
-        `Account ${account} with market place address ${marketplaceAddr}`
-      );
-      if (account.address === marketplaceAddr) {
-        setOfferButton(false);
-      } else {
-        setOfferButton(true);
-      }
-    }
-  }, [account]);
   const marketplaceAddr =
     "0x3ce691ae174233fc2470a947cf86a9647f4e282d23c568102d0f3a5a50bea008";
   const handleMintNFTClick = () => {
@@ -49,20 +34,20 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
   const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
   // const client = new AptosClient("https://fullnode.devnet.aptoslabs.com/v1");
 
-  const handleDisplayOffer = async () => {
-    if (!account) return;
-    try {
-      const getOffers = await client.view({
-        function: `${marketplaceAddr}::NFTMarketplace::show_offers`,
-        arguments: [marketplaceAddr, "100", "0"],
-        type_arguments: [],
-      });
-      console.log("Get offers: ", getOffers);
-    } catch (error) {
-      console.error("Error occured when getting offers:", error);
-      message.error("Failed to get offers.");
-    }
-  };
+  // const handleDisplayOffer = async () => {
+  //   if (!account) return;
+  //   try {
+  //     const getOffers = await client.view({
+  //       function: `${marketplaceAddr}::NFTMarketplace::show_offers`,
+  //       arguments: [marketplaceAddr, "100", "0"],
+  //       type_arguments: [],
+  //     });
+  //     console.log("Get offers: ", getOffers);
+  //   } catch (error) {
+  //     console.error("Error occured when getting offers:", error);
+  //     message.error("Failed to get offers.");
+  //   }
+  // };
   const handleFetchNfts = async (selectedRarity: number | undefined) => {
     try {
       const response = await client.getAccountResource(
@@ -109,9 +94,6 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
     <NFTContext.Provider
       value={{
         marketplaceAddr,
-        account: account?.address,
-        offerButton,
-        setOfferButton,
         currentPage,
         nfts,
         handleFetchNfts,
@@ -127,7 +109,7 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
         handleMintNFTClick,
         offerLength,
         setOfferLength,
-        handleDisplayOffer,
+        // handleDisplayOffer,
       }}
     >
       {children}

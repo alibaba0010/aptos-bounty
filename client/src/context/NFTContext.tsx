@@ -3,9 +3,7 @@ import { NFT } from "./NFTProvider";
 
 export type NFTContextType = {
   marketplaceAddr: string;
-  account: string | undefined;
-  offerButton: boolean;
-  setOfferButton: (visible: boolean) => void;
+  // account: string | undefined;
   isModalVisible: boolean;
   currentPage: number;
   setCurrentPage: (page: number) => void;
@@ -21,7 +19,7 @@ export type NFTContextType = {
   handleMintNFTClick: () => void;
   offerLength: number;
   setOfferLength: (value: number) => void;
-  handleDisplayOffer: () => void;
+  // handleDisplayOffer: () => void;
 };
 
 const NFTContext = createContext<NFTContextType | undefined>(undefined);

@@ -18,7 +18,6 @@ const MintNFT = () => {
   }) => {
     try {
       const nameVector = Array.from(new TextEncoder().encode(values.name));
-      console.log("Name vector ", nameVector);
       const descriptionVector = Array.from(
         new TextEncoder().encode(values.description)
       );

@@ -11,7 +11,6 @@ const Offer = ({ offer }: { offer: boolean }) => {
   const {
     isOfferModalVisible,
     setIsOfferModalVisible,
-    offerButton,
     selectedNft,
     offerLength,
     marketplaceAddr,
@@ -55,46 +54,34 @@ const Offer = ({ offer }: { offer: boolean }) => {
       message.error("Failed to make an offer for NFT.");
     }
   };
-
+  console.log("Offer for NFT submitted successfully: ", isOfferModalVisible);
   return (
-    <>
-      {!offerButton && (
-        <div className="flex items-center justify-between px-4 py-2 text-sm cursor-pointer hover:bg-gray-700 transition-colors duration-200">
-          <span className="text-white">Offers</span>
-          {offerLength >= 0 && (
-            <Badge className="ml-2 bg-blue-500 text-white">{offerLength}</Badge>
-          )}
-        </div>
-      )}
-      {isOfferModalVisible && (
-        <Modal
-          title="Make An Offer"
-          open={isOfferModalVisible}
-          onCancel={handleModalClose}
-          footer={[
-            <Button key="cancel" onClick={handleModalClose}>
-              Cancel
-            </Button>,
-            <Button key="submit" type="primary" onClick={handleOfferSubmit}>
-              Submit Offer
-            </Button>,
-          ]}
-        >
-          <Text strong>NFT Name: {selectedNft?.name}</Text>
-          <br />
-          <Text strong>Current Price: {selectedNft?.price} APT</Text>
-          <br />
-          <Text strong>Your Offer:</Text>
-          <Input
-            type="number"
-            placeholder="Enter your offer in APT"
-            value={offerPrice}
-            onChange={(e) => setOfferPrice(e.target.value)}
-            style={{ marginTop: 5 }}
-          />
-        </Modal>
-      )}
-    </>
+    <Modal
+      title="Make An Offer"
+      open={isOfferModalVisible}
+      onCancel={handleModalClose}
+      footer={[
+        <Button key="cancel" onClick={handleModalClose}>
+          Cancel
+        </Button>,
+        <Button key="submit" type="primary" onClick={handleOfferSubmit}>
+          Submit Offer
+        </Button>,
+      ]}
+    >
+      <Text strong>NFT Name: {selectedNft?.name}</Text>
+      <br />
+      <Text strong>Current Price: {selectedNft?.price} APT</Text>
+      <br />
+      <Text strong>Your Offer:</Text>
+      <Input
+        type="number"
+        placeholder="Enter your offer in APT"
+        value={offerPrice}
+        onChange={(e) => setOfferPrice(e.target.value)}
+        style={{ marginTop: 5 }}
+      />
+    </Modal>
   );
 };
 

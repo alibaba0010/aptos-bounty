@@ -49,24 +49,22 @@ const MarketView = ({ offer }: { offer: boolean }) => {
   const [isBuyModalVisible, setIsBuyModalVisible] = useState(false);
   const {
     marketplaceAddr,
-    account,
     currentPage,
     setCurrentPage,
     handleFetchNfts,
     selectedNft,
     setSelectedNft,
-    offerButton,
     nfts,
     setIsOfferModalVisible,
+    isOfferModalVisible,
   } = useContext(NFTContext) as NFTContextType;
   useEffect(() => {
     handleFetchNfts(undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  const { account } = useWallet();
   const handleBuyClick = (nft: NFT) => {
-    console.log("Offer clicked: " + nft.id);
-
+    console.log("NftClick", nft);
     setSelectedNft(nft);
     setIsBuyModalVisible(true);
   };
@@ -193,7 +191,15 @@ const MarketView = ({ offer }: { offer: boolean }) => {
                 >
                   Buy
                 </Button>,
-                offerButton && (
+                offer ? (
+                  <Button
+                    key="auction"
+                    type="link"
+                    // onClick={() => handleOfferClick(nft)}
+                  >
+                    Auction
+                  </Button>
+                ) : (
                   <Button
                     key="offer"
                     type="link"
@@ -272,7 +278,7 @@ const MarketView = ({ offer }: { offer: boolean }) => {
           </>
         )}
       </Modal>
-      {offerButton && <Offer offer={offer} />}
+      {offer && <Offer offer={offer} />}
     </div>
   );
 };
