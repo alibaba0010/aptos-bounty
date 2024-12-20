@@ -54,7 +54,6 @@ const Offer = ({ offer }: { offer: boolean }) => {
       message.error("Failed to make an offer for NFT.");
     }
   };
-  console.log("Offer for NFT submitted successfully: ", isOfferModalVisible);
   return (
     <Modal
       title="Make An Offer"

@@ -64,7 +64,6 @@ const MarketView = ({ offer }: { offer: boolean }) => {
   }, []);
   const { account } = useWallet();
   const handleBuyClick = (nft: NFT) => {
-    console.log("NftClick", nft);
     setSelectedNft(nft);
     setIsBuyModalVisible(true);
   };
