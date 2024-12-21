@@ -12,7 +12,6 @@ const Offer = ({ offer }: { offer: boolean }) => {
     isOfferModalVisible,
     setIsOfferModalVisible,
     selectedNft,
-    offerLength,
     marketplaceAddr,
   } = useContext(NFTContext) as NFTContextType;
 
@@ -25,8 +24,6 @@ const Offer = ({ offer }: { offer: boolean }) => {
 
   const handleOfferSubmit = async () => {
     if (!selectedNft || !offerPrice) return;
-    console.log("Offer Price: ", offerPrice);
-    console.log("Offer Selected: ", selectedNft.price);
 
     // Implement the logic to submit the offer
     try {

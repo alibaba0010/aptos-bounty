@@ -62,8 +62,6 @@ const MyNFTs: React.FC = () => {
         return;
       }
 
-      console.log("Fetching details for each NFT ID:", nftIds);
-
       const userNFTs = (
         await Promise.all(
           nftIds.map(async (id) => {
@@ -121,7 +119,6 @@ const MyNFTs: React.FC = () => {
         )
       ).filter((nft): nft is NFT => nft !== null);
 
-      console.log("User NFTs:", userNFTs);
       setNfts(userNFTs);
     } catch (error) {
       console.error("Error fetching NFTs:", error);

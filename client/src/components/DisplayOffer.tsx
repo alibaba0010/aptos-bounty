@@ -30,7 +30,25 @@ const DisplayOffer = () => {
   const truncateAddress = (address: string, start = 6, end = 4) => {
     return `${address.slice(0, start)}...${address.slice(-end)}`;
   };
+  const handleAcceptOffer = async (nft: NFT) => {
+    try {
+      const priceInOctas = nft.offer_price * 100000000;
 
+      const entryFunctionPayload = {
+        type: "entry_function_payload",
+        function: `${marketplaceAddr}::NFTMarketplace::purchase_nft`,
+        type_arguments: [],
+        arguments: [nft.offree, nft.id.toString(), priceInOctas.toString()],
+      };
+      const response = await (window as any).aptos.signAndSubmitTransaction(
+        entryFunctionPayload
+      );
+      const transactionHash = await client.waitForTransaction(response.hash);
+      message.success("NFT purchased successfully!");
+
+      console.log("Hash: " + transactionHash);
+    } catch (error) {}
+  };
   const handleDisplayOffer = async () => {
     if (!account) return;
     try {
@@ -54,10 +72,7 @@ const DisplayOffer = () => {
       };
       const decodedNfts = offerNFTs.map((nft) => ({
         ...nft,
-        // name: new TextDecoder().decode(hexToUint8Array(nft.name.slice(2))),
-        // description: new TextDecoder().decode(
-        //   hexToUint8Array(nft.description.slice(2))
-        // ),
+        name: new TextDecoder().decode(hexToUint8Array(nft.name.slice(2))),
         price: nft.price / 100000000,
         offer_price: nft.offer_price / 100000000,
       }));
@@ -122,7 +137,7 @@ const DisplayOffer = () => {
                     key="accept"
                     type="text"
                     icon={<FaCheck style={{ color: "green" }} />}
-                    // onClick={() => handleAcceptOffer(nft)}
+                    onClick={() => handleAcceptOffer(nft)}
                   >
                     Accept
                   </Button>,
@@ -147,8 +162,10 @@ const DisplayOffer = () => {
                 >
                   {rarityLabels[nft.rarity]}
                 </Tag>
-                {/* <Meta title={nft.name} description={`Price: ${nft.price} APT`} /> */}
-                <p>Price: {nft.price} APT</p>
+                <Meta
+                  title={nft.name}
+                  description={`Price: ${nft.price} APT`}
+                />
                 <p>Offer Price: {nft.offer_price} APT</p>
                 <p>{nft.description}</p>
                 <p>ID: {nft.id}</p>

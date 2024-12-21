@@ -1,5 +1,5 @@
 // TODO# 1: Define Module and Marketplace Address
-address 0x3ce691ae174233fc2470a947cf86a9647f4e282d23c568102d0f3a5a50bea008 {
+address 0xb4037b16f9c0ea23f4df411e84a49278165c40dd9940ee41b41acb22caae8725 {
 
     module NFTMarketplace {
         use 0x1::signer;
@@ -36,14 +36,22 @@ struct NFT has store, key {
         //TODO: Offers Structure
   struct OfferNFT has copy, drop {
             id: u64,
-            name: string,
+            name: vector<u8>,
+            uri: vector<u8>,
             offree: address,
             price: u64,
             offer_price: u64,
+            made_ofer: bool,
             rarity: u8
-            // added name
+            // added name and uri
         }
-
+struct AuctionNFT has copy, drop {
+            id: u64,
+            name: vector<u8>,
+            uri: vector<u8>,
+            price: u64,
+            // add auction_price, // cuurrent auctioner address
+}
         // TODO# 5: Set Marketplace Fee
  const MARKETPLACE_FEE_PERCENT: u64 = 2; // 2% fee
 
@@ -248,6 +256,14 @@ struct NFT has store, key {
             let marketplace = borrow_global_mut<Marketplace>(marketplace_addr);
             let nft_ref = vector::borrow_mut(&mut marketplace.nfts, nft_id);
             assert!(offer_price > 0, 102); // Invalid price
+
+    // Calculate marketplace fee
+            let fee = (nft_ref.offer_price * MARKETPLACE_FEE_PERCENT) / 100;
+            let payment = offer_price - fee;
+
+            // Transfer payment to the seller and fee to the marketplace
+            coin::transfer<aptos_coin::AptosCoin>(account, marketplace_addr, payment);
+            coin::transfer<aptos_coin::AptosCoin>(account, signer::address_of(account), fee);
 nft_ref.offree = signer::address_of(account);
 nft_ref.offer_price = offer_price;
 nft_ref.made_ofer = true;
@@ -259,13 +275,21 @@ nft_ref.made_ofer = true;
             let marketplace = borrow_global<Marketplace>(marketplace_addr);
             // intialize offerNFT struct
             let offer_nfts = vector::empty<OfferNFT>();
- let nfts_len = vector::length(&marketplace.nfts);
+            let nfts_len = vector::length(&marketplace.nfts);
             let end = min(offset + limit, nfts_len);
             let mut_i = offset;
   while (mut_i < end) {
                 let nft = vector::borrow(&marketplace.nfts, mut_i);
                 if (nft.made_ofer) {
-                    let offer_nft = OfferNFT { id: nft.id,offree: nft.offree,offer_price: nft.offer_price, price: nft.price, rarity: nft.rarity };
+                    let offer_nft = OfferNFT { 
+                        id: nft.id,
+                        name: nft.name,
+                        uri: nft.uri,
+                        offree: nft.offree,
+                        price: nft.price,
+                        offer_price: nft.offer_price, 
+                        made_ofer: nft.made_ofer, 
+                        rarity: nft.rarity };
                     vector::push_back(&mut offer_nfts, offer_nft);
                 };
                 mut_i = mut_i + 1;
@@ -273,6 +297,35 @@ nft_ref.made_ofer = true;
 
             offer_nfts
    
+
     }
+      public entry fun accept_offer(account: &signer, offree: address, nft_id: u64) acquires Marketplace{
+            let marketplace = borrow_global_mut<Marketplace>(signer::address_of(account));
+            let nft_ref = vector::borrow_mut(&mut marketplace.nfts, nft_id);
+      // Transfer ownership
+            nft_ref.owner = offree;
+            nft_ref.for_sale = false;
+            nft_ref.price = 0;
+            nft_ref.offer_price = 0;
+            nft_ref.made_ofer = false;
+      }
+    public entry fun reject_offer(account: &signer, offree: address, nft_id: u64) acquires Marketplace{
+         let marketplace = borrow_global_mut<Marketplace>(signer::address_of(account));
+            let nft_ref = vector::borrow_mut(&mut marketplace.nfts, nft_id);
+
+             let fee = (nft_ref.offer_price * MARKETPLACE_FEE_PERCENT) / 100;
+            let payment = nft_ref.offer_price - fee;
+            // from, to, amount
+               coin::transfer<aptos_coin::AptosCoin>(account, offree, payment);
+            coin::transfer<aptos_coin::AptosCoin>(account, signer::address_of(account), fee);
+
+            nft_ref.owner = signer::address_of(account);
+            nft_ref.offer_price = 0;
+            nft_ref.made_ofer = false;
+
+
+
+    }
+  
     }
 }
