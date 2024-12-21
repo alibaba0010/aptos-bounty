@@ -23,14 +23,14 @@ const { Meta } = Card;
 const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
 // const client = new AptosClient("https://fullnode.devnet.aptoslabs.com/v1");
 
-const rarityColors: { [key: number]: string } = {
+export const rarityColors: { [key: number]: string } = {
   1: "green",
   2: "blue",
   3: "purple",
   4: "orange",
 };
 
-const rarityLabels: { [key: number]: string } = {
+export const rarityLabels: { [key: number]: string } = {
   1: "Common",
   2: "Uncommon",
   3: "Rare",

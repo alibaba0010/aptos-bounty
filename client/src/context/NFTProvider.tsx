@@ -15,6 +15,8 @@ export type NFT = {
   price: number;
   for_sale: boolean;
   rarity: number;
+  offree: string;
+  offer_price: number;
 };
 const NFTProvider: FC<NFTProps> = ({ children }) => {
   const [isBuyModalVisible, setIsBuyModalVisible] = useState(false);

@@ -15,7 +15,8 @@ import {
   Button,
   Modal,
 } from "antd";
-
+import { rarityColors, rarityLabels } from "../pages/MarketView";
+import { FaCheck, FaTimes } from "react-icons/fa";
 const { Title } = Typography;
 const { Meta } = Card;
 
@@ -23,7 +24,7 @@ const DisplayOffer = () => {
   const { marketplaceAddr } = useContext(NFTContext) as NFTContextType;
   const { account } = useWallet();
   const [offerNFTs, setOfferNfts] = useState<NFT[]>([]);
-
+  const [offerLength, setOfferLength] = useState(false);
   const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
 
   const truncateAddress = (address: string, start = 6, end = 4) => {
@@ -39,6 +40,11 @@ const DisplayOffer = () => {
         type_arguments: [],
       });
       const offerNFTs = getOffers[0] as NFT[];
+      if (offerNFTs.length) {
+        setOfferLength(true);
+      } else {
+        setOfferLength(false);
+      }
       const hexToUint8Array = (hexString: string): Uint8Array => {
         const bytes = new Uint8Array(hexString.length / 2);
         for (let i = 0; i < hexString.length; i += 2) {
@@ -53,9 +59,8 @@ const DisplayOffer = () => {
         //   hexToUint8Array(nft.description.slice(2))
         // ),
         price: nft.price / 100000000,
-        offer_price: nft.price / 100000000,
+        offer_price: nft.offer_price / 100000000,
       }));
-      console.log("Decoded NFTs: ", decodedNfts);
       setOfferNfts(decodedNfts);
     } catch (error) {
       console.error("Error occured when getting offers:", error);
@@ -77,6 +82,84 @@ const DisplayOffer = () => {
       <Title level={2} style={{ marginBottom: "20px" }}>
         Offers
       </Title>
+
+      {/* Card Grid */}
+      {offerLength ? (
+        <Row
+          gutter={[24, 24]}
+          style={{
+            marginTop: 20,
+            width: "100%",
+            display: "flex",
+            justifyContent: "center", // Center row content
+            flexWrap: "wrap",
+          }}
+        >
+          {offerNFTs.map((nft) => (
+            <Col
+              key={nft.id}
+              xs={24}
+              sm={12}
+              md={8}
+              lg={6}
+              xl={6}
+              style={{
+                display: "flex",
+                justifyContent: "center", // Center the single card horizontally
+                alignItems: "center", // Center content in both directions
+              }}
+            >
+              <Card
+                hoverable
+                style={{
+                  width: "100%", // Make the card responsive
+                  maxWidth: "240px", // Limit the card width on larger screens
+                  margin: "0 auto",
+                }}
+                cover={<img alt={nft.name} src={nft.uri} />}
+                actions={[
+                  <Button
+                    key="accept"
+                    type="text"
+                    icon={<FaCheck style={{ color: "green" }} />}
+                    // onClick={() => handleAcceptOffer(nft)}
+                  >
+                    Accept
+                  </Button>,
+                  <Button
+                    key="reject"
+                    type="text"
+                    icon={<FaTimes style={{ color: "red" }} />}
+                    // onClick={() => handleRejectOffer(nft)}
+                  >
+                    Reject
+                  </Button>,
+                ]}
+              >
+                {/* Rarity Tag */}
+                <Tag
+                  color={rarityColors[nft.rarity]}
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    marginBottom: "10px",
+                  }}
+                >
+                  {rarityLabels[nft.rarity]}
+                </Tag>
+                {/* <Meta title={nft.name} description={`Price: ${nft.price} APT`} /> */}
+                <p>Price: {nft.price} APT</p>
+                <p>Offer Price: {nft.offer_price} APT</p>
+                <p>{nft.description}</p>
+                <p>ID: {nft.id}</p>
+                <p>Offree: {truncateAddress(nft.offree)}</p>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      ) : (
+        <p>No offers available</p>
+      )}
     </div>
   );
 };
