@@ -12,6 +12,7 @@ import NFTContext, { NFTContextType } from "./context/NFTContext";
 import Offer from "./components/Offer";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import DisplayOffer from "./components/DisplayOffer";
+import Auctions from "./pages/Auctions";
 
 // TODOs
 // 1. configure marketplace address to be gotten from web
@@ -42,7 +43,11 @@ function App() {
         <Routes>
           <Route path="/" element={<MarketView offer={offer} />} />
           <Route path="/my-nfts" element={<MyNFTs />} />
-          {offer && <Route path="/offers" element={<DisplayOffer />} />}
+          {offer ? (
+            <Route path="/offers" element={<DisplayOffer />} />
+          ) : (
+            <Route path="/auctions" element={<Auctions />} />
+          )}
         </Routes>
         <MintNFT />
         <Offer offer={offer} />

@@ -47,6 +47,7 @@ const MarketView = ({ offer }: { offer: boolean }) => {
   const pageSize = 8;
 
   const [isBuyModalVisible, setIsBuyModalVisible] = useState(false);
+  const [isAuctionModalVisible, setIsAuctionModalVisible] = useState(false);
   const {
     marketplaceAddr,
     currentPage,
@@ -70,6 +71,12 @@ const MarketView = ({ offer }: { offer: boolean }) => {
     if (!account) return;
     setSelectedNft(nft);
     setIsOfferModalVisible(true);
+  };
+
+  const handleAuctionClick = async (nft: NFT) => {
+    if (!account) return;
+    setSelectedNft(nft);
+    setIsAuctionModalVisible(true);
   };
 
   const handleCancelBuy = () => {
@@ -193,7 +200,7 @@ const MarketView = ({ offer }: { offer: boolean }) => {
                   <Button
                     key="auction"
                     type="link"
-                    // onClick={() => handleOfferClick(nft)}
+                    onClick={() => handleAuctionClick(nft)}
                   >
                     Auction
                   </Button>

@@ -26,6 +26,7 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
   const [nfts, setNfts] = useState<NFT[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedNft, setSelectedNft] = useState<NFT | null>(null);
+  const [isAuctionModalVisible, setIsAuctionModalVisible] = useState(false);
 
   const marketplaceAddr =
     "0xb4037b16f9c0ea23f4df411e84a49278165c40dd9940ee41b41acb22caae8725";
@@ -92,6 +93,8 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
         setSelectedNft,
         setIsBuyModalVisible,
         handleMintNFTClick,
+        isAuctionModalVisible,
+        setIsAuctionModalVisible,
       }}
     >
       {children}
