@@ -32,23 +32,44 @@ const DisplayOffer = () => {
   };
   const handleAcceptOffer = async (nft: NFT) => {
     try {
-      const priceInOctas = nft.offer_price * 100000000;
-
       const entryFunctionPayload = {
         type: "entry_function_payload",
-        function: `${marketplaceAddr}::NFTMarketplace::purchase_nft`,
+        function: `${marketplaceAddr}::NFTMarketplace::accept_offer`,
         type_arguments: [],
-        arguments: [nft.offree, nft.id.toString(), priceInOctas.toString()],
+        arguments: [nft.offree, nft.id.toString()],
       };
       const response = await (window as any).aptos.signAndSubmitTransaction(
         entryFunctionPayload
       );
-      const transactionHash = await client.waitForTransaction(response.hash);
-      message.success("NFT purchased successfully!");
-
-      console.log("Hash: " + transactionHash);
-    } catch (error) {}
+      await client.waitForTransaction(response.hash);
+      message.success("NFT Transferred successfully!");
+      await handleDisplayOffer();
+    } catch (error) {
+      console.error("Error occured when accepting offers:", error);
+      message.error("Failed to accept offer.");
+    }
   };
+
+  const handleRejectOffer = async (nft: NFT) => {
+    try {
+      const entryFunctionPayload = {
+        type: "entry_function_payload",
+        function: `${marketplaceAddr}::NFTMarketplace::reject_offer`,
+        type_arguments: [],
+        arguments: [nft.offree, nft.id.toString()],
+      };
+      const response = await (window as any).aptos.signAndSubmitTransaction(
+        entryFunctionPayload
+      );
+      await client.waitForTransaction(response.hash);
+      message.success("NFT Offer Cancelled successfully!");
+      handleDisplayOffer();
+    } catch (error) {
+      console.error("Error occured when cancelling offers:", error);
+      message.error("Failed to cancel offer.");
+    }
+  };
+
   const handleDisplayOffer = async () => {
     if (!account) return;
     try {
@@ -73,10 +94,12 @@ const DisplayOffer = () => {
       const decodedNfts = offerNFTs.map((nft) => ({
         ...nft,
         name: new TextDecoder().decode(hexToUint8Array(nft.name.slice(2))),
+        uri: new TextDecoder().decode(hexToUint8Array(nft.uri.slice(2))),
         price: nft.price / 100000000,
         offer_price: nft.offer_price / 100000000,
       }));
-      setOfferNfts(decodedNfts);
+      const filteredNfts = decodedNfts.filter((nft) => nft.made_ofer);
+      setOfferNfts(filteredNfts);
     } catch (error) {
       console.error("Error occured when getting offers:", error);
       message.error("Failed to get offers.");
@@ -145,7 +168,7 @@ const DisplayOffer = () => {
                     key="reject"
                     type="text"
                     icon={<FaTimes style={{ color: "red" }} />}
-                    // onClick={() => handleRejectOffer(nft)}
+                    onClick={() => handleRejectOffer(nft)}
                   >
                     Reject
                   </Button>,
