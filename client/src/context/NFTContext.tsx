@@ -17,6 +17,8 @@ export type NFTContextType = {
   setIsOfferModalVisible: (visible: boolean) => void;
   setIsBuyModalVisible: (visible: boolean) => void;
   handleMintNFTClick: () => void;
+  isAuctionModalVisible: boolean;
+  setIsAuctionModalVisible: (visible: boolean) => void;
 };
 
 const NFTContext = createContext<NFTContextType | undefined>(undefined);
