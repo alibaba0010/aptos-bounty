@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import NFTContext, { NFTContextType } from "../context/NFTContext";
 import { NFT } from "../context/NFTProvider";
 import { Typography, message, Card, Row, Col, Tag, Button } from "antd";
-import { rarityColors, rarityLabels } from "../pages/MarketView";
+import { rarityColors, rarityLabels } from "./MarketView";
 import { FaCheck, FaTimes } from "react-icons/fa";
 const { Title } = Typography;
 const { Meta } = Card;

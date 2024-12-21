@@ -15,8 +15,6 @@ import { AptosClient } from "aptos";
 import { DownOutlined, LogoutOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import NFTContext, { NFTContextType } from "../context/NFTContext";
-import Offer from "./Offer";
-import DisplayOffer from "./DisplayOffer";
 
 const { Header } = Layout;
 const { Text } = Typography;
@@ -105,10 +103,16 @@ const NavBar = ({ offer }: { offer: boolean }) => {
           <Menu.Item key="mint-nft" onClick={handleMintNFTClick}>
             <span style={{ color: "#fff" }}>Mint NFT</span>
           </Menu.Item>
-          {offer && (
+          {offer ? (
             <Menu.Item key="offers">
               <Link to="/offers" style={{ color: "#fff" }}>
                 Offers
+              </Link>
+            </Menu.Item>
+          ) : (
+            <Menu.Item key="auctions">
+              <Link to="/auctions" style={{ color: "#fff" }}>
+                Auctions
               </Link>
             </Menu.Item>
           )}

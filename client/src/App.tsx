@@ -11,7 +11,7 @@ import MintNFT from "./components/MintNFT";
 import NFTContext, { NFTContextType } from "./context/NFTContext";
 import Offer from "./components/Offer";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import DisplayOffer from "./components/DisplayOffer";
+import DisplayOffer from "./pages/DisplayOffer";
 import Auctions from "./pages/Auctions";
 
 // TODOs

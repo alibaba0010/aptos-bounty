@@ -47,7 +47,6 @@ const MarketView = ({ offer }: { offer: boolean }) => {
   const pageSize = 8;
 
   const [isBuyModalVisible, setIsBuyModalVisible] = useState(false);
-  const [isAuctionModalVisible, setIsAuctionModalVisible] = useState(false);
   const {
     marketplaceAddr,
     currentPage,
@@ -57,6 +56,7 @@ const MarketView = ({ offer }: { offer: boolean }) => {
     setSelectedNft,
     nfts,
     setIsOfferModalVisible,
+    setIsAuctionModalVisible,
   } = useContext(NFTContext) as NFTContextType;
   useEffect(() => {
     handleFetchNfts(undefined);
