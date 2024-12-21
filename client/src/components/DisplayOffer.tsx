@@ -3,18 +3,7 @@ import { AptosClient } from "aptos";
 import React, { useContext, useEffect, useState } from "react";
 import NFTContext, { NFTContextType } from "../context/NFTContext";
 import { NFT } from "../context/NFTProvider";
-import {
-  Typography,
-  Radio,
-  message,
-  Card,
-  Row,
-  Col,
-  Pagination,
-  Tag,
-  Button,
-  Modal,
-} from "antd";
+import { Typography, message, Card, Row, Col, Tag, Button } from "antd";
 import { rarityColors, rarityLabels } from "../pages/MarketView";
 import { FaCheck, FaTimes } from "react-icons/fa";
 const { Title } = Typography;
