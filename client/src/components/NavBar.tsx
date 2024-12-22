@@ -103,19 +103,18 @@ const NavBar = ({ offer }: { offer: boolean }) => {
           <Menu.Item key="mint-nft" onClick={handleMintNFTClick}>
             <span style={{ color: "#fff" }}>Mint NFT</span>
           </Menu.Item>
-          {offer ? (
+          {offer && (
             <Menu.Item key="offers">
               <Link to="/offers" style={{ color: "#fff" }}>
                 Offers
               </Link>
             </Menu.Item>
-          ) : (
-            <Menu.Item key="auctions">
-              <Link to="/auctions" style={{ color: "#fff" }}>
-                Auctions
-              </Link>
-            </Menu.Item>
           )}
+          <Menu.Item key="auctions">
+            <Link to="/auctions" style={{ color: "#fff" }}>
+              Auctions
+            </Link>
+          </Menu.Item>
         </Menu>
       </div>
 

@@ -43,11 +43,8 @@ function App() {
         <Routes>
           <Route path="/" element={<MarketView offer={offer} />} />
           <Route path="/my-nfts" element={<MyNFTs />} />
-          {offer ? (
-            <Route path="/offers" element={<DisplayOffer />} />
-          ) : (
-            <Route path="/auctions" element={<Auctions />} />
-          )}
+          {offer && <Route path="/offers" element={<DisplayOffer />} />}
+          <Route path="/auctions" element={<Auctions />} />
         </Routes>
         <MintNFT />
         <Offer offer={offer} />
