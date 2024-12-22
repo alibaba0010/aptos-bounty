@@ -52,7 +52,7 @@ const DisplayOffer = () => {
       );
       await client.waitForTransaction(response.hash);
       message.success("NFT Offer Cancelled successfully!");
-      handleDisplayOffer();
+      await handleDisplayOffer();
     } catch (error) {
       console.error("Error occured when cancelling offers:", error);
       message.error("Failed to cancel offer.");
