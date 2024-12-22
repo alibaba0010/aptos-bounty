@@ -15,9 +15,6 @@ import DisplayOffer from "./pages/DisplayOffer";
 import Auctions from "./pages/Auctions";
 
 // TODOs
-// 1. configure marketplace address to be gotten from web
-// functionality feature that allows users to make offers on NFTs listed in the marketplace, enabling sellers to accept or decline incoming offers for their assets.
-// make an offer and place a bidon the nft
 
 function App() {
   const [offer, setOffer] = useState(false);
