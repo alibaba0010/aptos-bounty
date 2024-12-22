@@ -56,7 +56,6 @@ const MarketView = ({ offer }: { offer: boolean }) => {
     setSelectedNft,
     nfts,
     setIsOfferModalVisible,
-    setIsAuctionModalVisible,
   } = useContext(NFTContext) as NFTContextType;
   useEffect(() => {
     handleFetchNfts(undefined);
