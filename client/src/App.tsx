@@ -14,8 +14,6 @@ import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import DisplayOffer from "./pages/DisplayOffer";
 import Auctions from "./pages/Auctions";
 
-// TODOs
-
 function App() {
   const [offer, setOffer] = useState(false);
   const { account } = useWallet();

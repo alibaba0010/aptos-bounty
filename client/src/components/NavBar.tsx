@@ -83,7 +83,7 @@ const NavBar = ({ offer }: { offer: boolean }) => {
           theme="dark"
           mode="horizontal"
           defaultSelectedKeys={["marketplace"]}
-          style={{ backgroundColor: "#001529", width: "400px" }}
+          style={{ backgroundColor: "#001529", width: "500px" }}
         >
           <Menu.Item key="marketplace">
             <Link to="/" style={{ color: "#fff" }}>

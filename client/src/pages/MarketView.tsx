@@ -75,8 +75,23 @@ const MarketView = ({ offer }: { offer: boolean }) => {
 
   const handleAuctionClick = async (nft: NFT) => {
     if (!account) return;
-    setSelectedNft(nft);
-    setIsAuctionModalVisible(true);
+    try {
+      const entryFunctionPayload = {
+        type: "entry_function_payload",
+        function: `${marketplaceAddr}::NFTMarketplace::auction_nft`,
+        type_arguments: [],
+        arguments: [nft.id.toString()],
+      };
+      const response = await (window as any).aptos.signAndSubmitTransaction(
+        entryFunctionPayload
+      );
+      await client.waitForTransaction(response.hash);
+
+      message.success("NFT Auctioned successfully!");
+    } catch (error) {
+      console.error("Error auctioning NFT:", error);
+      message.error("Failed to auction NFT.");
+    }
   };
 
   const handleCancelBuy = () => {
