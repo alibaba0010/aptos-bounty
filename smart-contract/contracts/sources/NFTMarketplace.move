@@ -57,9 +57,10 @@ struct AuctionNFT has copy, drop {
             name: vector<u8>,
             uri: vector<u8>,
             on_auction: bool,
-            bidder:address,
-            auction_offer_made: bool,
             previous_bid: u64,
+            previous_bidder:address,
+            auction_offer_made: bool,
+            current_bidder:address,
             current_bid: u64,
             new_offer: bool,
             rarity: u8
@@ -326,7 +327,7 @@ nft_ref.made_ofer = true;
             nft_ref.price = 0;
             nft_ref.offer_price = 0;
             nft_ref.made_ofer = false;
-            nft.offree = @0x0;
+            nft_ref.offree = @0x0;
       }
 //TODO24: Reject offer made
      public entry fun reject_offer(account: &signer, offree: address, nft_id: u64) acquires Marketplace{
@@ -342,7 +343,7 @@ nft_ref.made_ofer = true;
             nft_ref.owner = signer::address_of(account);
             nft_ref.offer_price = 0;
             nft_ref.made_ofer = false;
-            nft.offree = @0x0;
+            nft_ref.offree = @0x0;
 
 
     }
@@ -366,9 +367,9 @@ public entry fun auction_bid_nft(account: &signer, marketplace_addr: address, nf
     // Calculate marketplace fee
     let fee = (auction_price * MARKETPLACE_FEE_PERCENT) / 100;
     let payment = auction_price - fee;
-if(nft.auction_offer_made){
+if(nft_ref.auction_offer_made){
     nft_ref.previous_bid = nft_ref.current_bid;
-    nft.previous_bidder = nft_ref.current_bidder;
+    nft_ref.previous_bidder = nft_ref.current_bidder;
     nft_ref.current_bid =  auction_price;
     nft_ref.current_bidder = signer::address_of(account);
 }else{
@@ -384,7 +385,7 @@ if(nft.auction_offer_made){
 
 // Add a helper function to retrieve the previous and current bid
 #[view]
-public fun get_nfts_on_auction(marketplace_addr: address, nft_id: u64, limit: u64, offset: u64):vector<AuctionNFT> acquires Marketplace {
+public fun get_nfts_on_auction(marketplace_addr: address, limit: u64, offset: u64):vector<AuctionNFT> acquires Marketplace {
         let marketplace = borrow_global<Marketplace>(marketplace_addr);
         let auction_nfts = vector::empty<AuctionNFT>();
         let nfts_len = vector::length(&marketplace.nfts);
@@ -398,12 +399,13 @@ public fun get_nfts_on_auction(marketplace_addr: address, nft_id: u64, limit: u6
                         id: nft.id,
                         name: nft.name,
                         uri: nft.uri,
-                        previous_bidder: nft.previous_bidder,
                         current_bidder: nft.current_bidder,
-                        previous_bid: nft.previous_bid,
                         current_bid: nft.current_bid, 
+                        previous_bidder: nft.previous_bidder,
+                        previous_bid: nft.previous_bid,
                         on_auction: nft.on_auction, 
-                        auction_offer_made: nft.auction_offer_made, 
+                        auction_offer_made: nft.auction_offer_made,
+                        new_offer: nft.new_offer, 
                         rarity: nft.rarity 
                         };
                     vector::push_back(&mut auction_nfts, auction_nft);
@@ -449,7 +451,7 @@ public entry fun finalize_bid(account: &signer, nft_id: u64) acquires Marketplac
         let nft_ref = vector::borrow_mut(&mut marketplace.nfts, nft_id);
 
 // Transfer ownership
-if(nft.ref.auction_offer_made) {
+if(nft_ref.auction_offer_made) {
 
             nft_ref.owner = nft_ref.current_bidder;
             nft_ref.for_sale = false;
