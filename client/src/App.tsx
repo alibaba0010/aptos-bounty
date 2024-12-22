@@ -13,6 +13,7 @@ import Offer from "./components/Offer";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import DisplayOffer from "./pages/DisplayOffer";
 import Auctions from "./pages/Auctions";
+import Auction from "./components/Auction";
 
 function App() {
   const [offer, setOffer] = useState(false);
@@ -43,6 +44,7 @@ function App() {
         </Routes>
         <MintNFT />
         <Offer offer={offer} />
+        <Auction />
       </Layout>
     </Router>
   );
