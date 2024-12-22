@@ -95,7 +95,9 @@ const DisplayOffer = () => {
     }
   };
   useEffect(() => {
-    handleDisplayOffer();
+    if (account) {
+      handleDisplayOffer();
+    }
   }, []);
   return (
     <div
