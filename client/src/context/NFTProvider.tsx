@@ -29,7 +29,7 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
   const [isAuctionModalVisible, setIsAuctionModalVisible] = useState(false);
 
   const marketplaceAddr =
-    "0xb4037b16f9c0ea23f4df411e84a49278165c40dd9940ee41b41acb22caae8725";
+    "0x86979133542c09dc76ab1d92e920d64c0143b3f02322da6e1d737d3753752b7b";
   const handleMintNFTClick = () => {
     setIsModalVisible(true);
   };
@@ -40,7 +40,7 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
     try {
       const response = await client.getAccountResource(
         marketplaceAddr,
-        "0xb4037b16f9c0ea23f4df411e84a49278165c40dd9940ee41b41acb22caae8725::NFTMarketplace::Marketplace"
+        "0x86979133542c09dc76ab1d92e920d64c0143b3f02322da6e1d737d3753752b7b::NFTMarketplace::Marketplace"
       );
       const nftList = (response.data as { nfts: NFT[] }).nfts;
 
