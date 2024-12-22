@@ -53,9 +53,9 @@ struct AuctionNFT has copy, drop {
             id: u64,
             name: vector<u8>,
             uri: vector<u8>,
-            price: u64,
             current_bid: u64,
-            // add auction_price, // cuurrent auctioner address
+            on_auction: bool
+            rarity: u8
 }
         // TODO# 5: Set Marketplace Fee
  const MARKETPLACE_FEE_PERCENT: u64 = 2; // 2% fee
