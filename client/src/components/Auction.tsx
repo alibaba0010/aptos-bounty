@@ -69,8 +69,6 @@ const Auction = () => {
     >
       <Text strong>NFT Name: {selectedAuctionNft?.name}</Text>
       <br />
-      <Text strong>Current Bid: {selectedAuctionNft?.current_bid} APT</Text>
-      <br />
       <Text strong>Your Bid:</Text>
       <Input
         type="number"

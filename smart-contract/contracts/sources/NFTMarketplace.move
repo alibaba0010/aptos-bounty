@@ -367,15 +367,10 @@ public entry fun auction_bid_nft(account: &signer, marketplace_addr: address, nf
     // Calculate marketplace fee
     let fee = (auction_price * MARKETPLACE_FEE_PERCENT) / 100;
     let payment = auction_price - fee;
-if(nft_ref.auction_offer_made){
-    nft_ref.previous_bid = nft_ref.current_bid;
-    nft_ref.previous_bidder = nft_ref.current_bidder;
+
     nft_ref.current_bid =  auction_price;
     nft_ref.current_bidder = signer::address_of(account);
-}else{
-    nft_ref.current_bid =  auction_price;
-    nft_ref.current_bidder = signer::address_of(account);
-};
+
 // Transfer payment to the seller and fee to the marketplace
         coin::transfer<aptos_coin::AptosCoin>(account, marketplace_addr, payment);
         coin::transfer<aptos_coin::AptosCoin>(account, signer::address_of(account), fee);
@@ -426,6 +421,10 @@ public fun get_nfts_on_auction(marketplace_addr: address, limit: u64, offset: u6
                 coin::transfer<aptos_coin::AptosCoin>(account, nft_ref.previous_bidder, payment);
                 coin::transfer<aptos_coin::AptosCoin>(account, signer::address_of(account), fee);
             };
+    nft_ref.previous_bid = nft_ref.current_bid;
+    nft_ref.previous_bidder = nft_ref.current_bidder;
+    nft_ref.current_bid =  0;
+    nft_ref.current_bidder = @0x0;
         nft_ref.auction_offer_made = true;
         nft_ref.new_offer = false;
 
@@ -441,7 +440,8 @@ public fun get_nfts_on_auction(marketplace_addr: address, limit: u64, offset: u6
             // from, to, amount
             coin::transfer<aptos_coin::AptosCoin>(account, nft_ref.current_bidder, payment);
             coin::transfer<aptos_coin::AptosCoin>(account, signer::address_of(account), fee);
-
+ nft_ref.current_bid =  0;
+    nft_ref.current_bidder = @0x0;
             nft_ref.new_offer = false;
 
     }
@@ -453,12 +453,10 @@ public entry fun finalize_bid(account: &signer, nft_id: u64) acquires Marketplac
 // Transfer ownership
 if(nft_ref.auction_offer_made) {
 
-            nft_ref.owner = nft_ref.current_bidder;
+            nft_ref.owner = nft_ref.previous_bidder;
             nft_ref.for_sale = false;
             nft_ref.on_auction = false;
             nft_ref.price = 0;
-            nft_ref.current_bid = 0;
-            nft_ref.current_bidder = @0x0;
             nft_ref.previous_bid = 0;
             nft_ref.previous_bidder = @0x0;
             nft_ref.made_ofer = false;

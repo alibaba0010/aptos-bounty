@@ -20,6 +20,7 @@ export type NFT = {
   made_ofer: boolean;
   current_bid: number;
   previous_bid: number;
+  new_offer: boolean;
 };
 const NFTProvider: FC<NFTProps> = ({ children }) => {
   const [isBuyModalVisible, setIsBuyModalVisible] = useState(false);

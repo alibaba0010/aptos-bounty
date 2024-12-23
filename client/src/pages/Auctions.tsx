@@ -40,6 +40,7 @@ const Auctions = () => {
       await client.waitForTransaction(response.hash);
       message.success("Bid finalized successfully!");
       await showAuctionedNFTsHandler();
+      window.location.reload();
     } catch (error) {
       console.error("Error occured when finalizing bid:", error);
       message.error("Failed to finalize bid.");
@@ -60,6 +61,7 @@ const Auctions = () => {
       await client.waitForTransaction(response.hash);
       message.success("Bid accepted successfully!");
       await showAuctionedNFTsHandler();
+      window.location.reload();
     } catch (error) {
       console.error("Error occured when accepting bid:", error);
       message.error("Failed to accept bid.");
@@ -80,6 +82,7 @@ const Auctions = () => {
       await client.waitForTransaction(response.hash);
       message.success("NFT Offer Cancelled successfully!");
       await showAuctionedNFTsHandler();
+      window.location.reload();
     } catch (error) {
       console.error("Error occured when rejecting bid:", error);
       message.error("Failed to reject bid.");
@@ -88,6 +91,7 @@ const Auctions = () => {
 
   const showAuctionedNFTsHandler = async () => {
     if (!account) return;
+
     try {
       const getAuctionedNFTs = await client.view({
         function: `${marketplaceAddr}::NFTMarketplace::get_nfts_on_auction`,
@@ -112,7 +116,7 @@ const Auctions = () => {
         ...nft,
         name: new TextDecoder().decode(hexToUint8Array(nft.name.slice(2))),
         uri: new TextDecoder().decode(hexToUint8Array(nft.uri.slice(2))),
-        cuurent_bid: nft.current_bid / 100000000,
+        current_bid: nft.current_bid / 100000000,
         previous_bid: nft.previous_bid / 100000000,
       }));
       setAuctionNfts(decodedNfts);
@@ -182,7 +186,7 @@ const Auctions = () => {
                 cover={<img alt={nft.name} src={nft.uri} />}
                 actions={[
                   <Col>
-                    {nftOwner && nft.made_ofer && (
+                    {nftOwner && nft.new_offer && (
                       <Row>
                         <Button
                           key="accept"
@@ -205,7 +209,6 @@ const Auctions = () => {
                         >
                           Reject
                         </Button>
-                        ,
                       </Row>
                     )}
                     {nftOwner ? (
