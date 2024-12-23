@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 import NFTContext from "./NFTContext";
 import { AptosClient } from "aptos";
 import { message } from "antd";
@@ -33,15 +33,14 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
   const [selectedAuctionNft, setSelectedAuctionNft] = useState<NFT | null>(
     null
   );
-  const [isRunning, setIsRunning] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [isRunning, setIsRunning] = useState<boolean>(false);
+  const [timeLeft, setTimeLeft] = useState<number>(0);
   const marketplaceAddr =
     "0x86979133542c09dc76ab1d92e920d64c0143b3f02322da6e1d737d3753752b7b";
   const handleMintNFTClick = () => {
     setIsModalVisible(true);
   };
   const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
-  // const client = new AptosClient("https://fullnode.devnet.aptoslabs.com/v1");
 
   const handleFetchNfts = async (selectedRarity: number | undefined) => {
     try {
@@ -82,7 +81,15 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
       message.error("Failed to fetch NFTs.");
     }
   };
-
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isRunning && timeLeft > 0) {
+      timer = setInterval(() => {
+        setTimeLeft((prevTime) => prevTime - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [isRunning, timeLeft]);
   return (
     <NFTContext.Provider
       value={{
