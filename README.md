@@ -62,33 +62,47 @@ and testing purposes.
 
 ### Prerequisites
 
-Install Aptos cli on your local machine using the following command
+Install Aptos CLI on your local machine using the following command
 
+```
+curl -fsSL "https://aptos.dev/scripts/install_cli.py" | python3
+```
+
+You can check that your installation is working by running the following command.
+
+```
+aptos info
+```
+
+## Running the project
+
+### ‼️‼️‼️ Copy your wallet address and insert into the
+
+- Move.toml
+- NFTMarketplace.move and
+- NFTProvider.tsx files
+
+  in the insert_address option
+
+```
+cd /smart-contract/contracts run
+aptos init
+and follow the instruction as shown below to configure your contract for deployment
+
+Still in the directory run
+aptos move publish
+follow the instructions as shown below
 ```
 
 ```
-
-Give examples
-
+cd /client run npm install to install all package dependencies for the project
+Run
+npm start
+when packages are installed
 ```
 
-### Installing
-
-A step by step series of examples that tell you how to get a development env running.
-
-Say what the step will be
-
-```
-
-Give the example
-
-```
-
-And repeat
-
-```
-
-until finished
+Example:
+![](./imgs/new.png)
 
 ```
 
