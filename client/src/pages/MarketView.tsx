@@ -56,6 +56,8 @@ const MarketView = ({ offer }: { offer: boolean }) => {
     setSelectedNft,
     nfts,
     setIsOfferModalVisible,
+    setIsRunning,
+    setTimeLeft,
   } = useContext(NFTContext) as NFTContextType;
   useEffect(() => {
     handleFetchNfts(undefined);
@@ -87,6 +89,8 @@ const MarketView = ({ offer }: { offer: boolean }) => {
       await client.waitForTransaction(response.hash);
 
       message.success("NFT Auctioned successfully!");
+      setIsRunning(true);
+      setTimeLeft(60);
     } catch (error) {
       console.error("Error auctioning NFT:", error);
       message.error("Failed to auction NFT.");

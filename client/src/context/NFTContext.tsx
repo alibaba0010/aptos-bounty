@@ -21,6 +21,10 @@ export type NFTContextType = {
   setIsAuctionModalVisible: (visible: boolean) => void;
   selectedAuctionNft: NFT | null;
   setSelectedAuctionNft: (nft: NFT | null) => void;
+  isRunning: boolean;
+  setIsRunning: (isRunning: boolean) => void;
+  timeLeft: number;
+  setTimeLeft: (timeLeft: number) => void;
 };
 
 const NFTContext = createContext<NFTContextType | undefined>(undefined);
