@@ -130,7 +130,7 @@ const Auctions = () => {
         setNftOwner(false);
       }
     }
-  }, []);
+  }, [account, marketplaceAddr]);
   return (
     <div
       style={{
