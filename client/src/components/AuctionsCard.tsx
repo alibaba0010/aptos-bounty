@@ -10,10 +10,15 @@ const { Meta } = Card;
 interface AuctionsCardProps {
   nft: NFT;
   nftOwner: boolean;
+  showAuctionedNFTsHandler: () => void;
 }
 const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
 
-const AuctionsCard: FC<AuctionsCardProps> = ({ nft, nftOwner }) => {
+const AuctionsCard: FC<AuctionsCardProps> = ({
+  nft,
+  nftOwner,
+  showAuctionedNFTsHandler,
+}) => {
   const { account } = useWallet();
   const {
     marketplaceAddr,
@@ -64,7 +69,7 @@ const AuctionsCard: FC<AuctionsCardProps> = ({ nft, nftOwner }) => {
       );
       await client.waitForTransaction(response.hash);
       message.success("Bid accepted successfully!");
-      window.location.reload();
+      await showAuctionedNFTsHandler();
     } catch (error) {
       console.error("Error occured when accepting bid:", error);
       message.error("Failed to accept bid.");
@@ -84,7 +89,7 @@ const AuctionsCard: FC<AuctionsCardProps> = ({ nft, nftOwner }) => {
       );
       await client.waitForTransaction(response.hash);
       message.success("NFT Offer Cancelled successfully!");
-      window.location.reload();
+      await showAuctionedNFTsHandler();
     } catch (error) {
       console.error("Error occured when rejecting bid:", error);
       message.error("Failed to reject bid.");
@@ -94,6 +99,7 @@ const AuctionsCard: FC<AuctionsCardProps> = ({ nft, nftOwner }) => {
     if (isRunning && timeLeft === 0) {
       finalizeBidHandler(nft);
     }
+
     // eslint-disable-next-line
   }, [isRunning, nft, timeLeft]);
   return (

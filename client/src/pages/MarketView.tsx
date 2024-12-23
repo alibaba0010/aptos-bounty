@@ -90,7 +90,7 @@ const MarketView = ({ offer }: { offer: boolean }) => {
 
       message.success("NFT Auctioned successfully!");
       setIsRunning(true);
-      setTimeLeft(60);
+      setTimeLeft(90);
     } catch (error) {
       console.error("Error auctioning NFT:", error);
       message.error("Failed to auction NFT.");

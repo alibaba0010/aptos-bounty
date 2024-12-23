@@ -91,7 +91,12 @@ const Auctions = () => {
           }}
         >
           {auctionsNFTs.map((nft) => (
-            <AuctionsCard key={nft.id} nft={nft} nftOwner={nftOwner} />
+            <AuctionsCard
+              key={nft.id}
+              nft={nft}
+              nftOwner={nftOwner}
+              showAuctionedNFTsHandler={showAuctionedNFTsHandler}
+            />
           ))}
         </Row>
       ) : (
