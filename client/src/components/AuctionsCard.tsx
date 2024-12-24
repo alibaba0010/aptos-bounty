@@ -102,6 +102,8 @@ const AuctionsCard: FC<AuctionsCardProps> = ({
     console.log(`Nft timer ${nft.timer} time set ${timeSet} in now ${now}`);
     if (isRunning && nft.timer <= now) {
       finalizeBidHandler(nft);
+    } else {
+      return;
     }
     // eslint-disable-next-line
   }, [isRunning, nft]);
