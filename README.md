@@ -2,7 +2,7 @@
   <a href="" rel="noopener">
  <img src="https://shorturl.at/mhcYV" alt="Aptos logo"></a>
 </p>
-<h3 align="center">Project Title</h3>
+<h3 align="center">APTOS BOUNTY CHALLENGE</h3>
 
 <div align="center">
 
