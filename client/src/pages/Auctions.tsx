@@ -101,7 +101,7 @@ const Auctions = () => {
           ))}
         </Row>
       ) : (
-        <p>No offers available</p>
+        <p>No NFT available on auction</p>
       )}
     </div>
   );
