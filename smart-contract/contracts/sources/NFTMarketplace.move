@@ -383,6 +383,7 @@ public entry fun auction_bid_nft(account: &signer, marketplace_addr: address, nf
 }
 
 // Add a helper function to retrieve the previous and current bid
+//TODO27: Show nfts on auction
 #[view]
 public fun get_nfts_on_auction(marketplace_addr: address, limit: u64, offset: u64):vector<AuctionNFT> acquires Marketplace {
         let marketplace = borrow_global<Marketplace>(marketplace_addr);
@@ -416,6 +417,7 @@ public fun get_nfts_on_auction(marketplace_addr: address, limit: u64, offset: u6
             auction_nfts 
 
 }
+//TODO28: Accept auction bid functionality
 // Function to accept auction offer
     public entry fun accept_auction_offer(account: &signer, nft_id: u64) acquires Marketplace{
             let marketplace = borrow_global_mut<Marketplace>(signer::address_of(account));
@@ -436,6 +438,7 @@ public fun get_nfts_on_auction(marketplace_addr: address, limit: u64, offset: u6
       
       }
 // Function to reject auction offer
+//TODO: Rejection bid functionality
      public entry fun reject_auction_offer(account: &signer, nft_id: u64) acquires Marketplace{
             let marketplace = borrow_global_mut<Marketplace>(signer::address_of(account));
             let nft_ref = vector::borrow_mut(&mut marketplace.nfts, nft_id);
@@ -451,6 +454,7 @@ public fun get_nfts_on_auction(marketplace_addr: address, limit: u64, offset: u6
 
     }
 // Add a helper function to finalize the auction
+//TODO30: Finalize bid functionality
 public entry fun finalize_bid(account: &signer, nft_id: u64) acquires Marketplace{
        let marketplace = borrow_global_mut<Marketplace>(signer::address_of(account));
         let nft_ref = vector::borrow_mut(&mut marketplace.nfts, nft_id);

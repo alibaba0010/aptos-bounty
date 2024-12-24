@@ -26,8 +26,7 @@
 - [Idea / Solution](#idea)
 - [Dependencies / Limitations](#limitations)
 - [Future Scope](#future_scope)
-- [Setting up a local environment](#getting_started)
-- [Usage](#usage)
+- [Components and Functionalities added](#usage)
 - [Technology Stack](#tech_stack)
 - [Contributing](../CONTRIBUTING.md)
 - [Authors](#authors)
@@ -106,27 +105,37 @@ Example:
 
 ```
 
-## 🎈 Usage <a name="usage"></a>
+## 🎈 Components and Functionalities added <a name="usage"></a>
+
+Frontend
+Pages
+DisplayOffer: Displays NFTs that has been offers from other users, visible only to nftOwner. Handles Accepting and Rejecting Offer functionalities.
+Auctions: Displays NFTs that has been auctioned by the nft owner. visible to all users.
+
+
+Components
+Offer: handles offers making functionality.
+Auction: handles bid making functionality.
+AuctionsCard: child to Auctions page. handles each nfts bid acceptor rejection functionalities, finalize bid functionalities either after finalize bid button clicked or time elapsed.
+```
+
+```
+Smart contract
+
+TOOD 21 - TODO30
+Line 278-484
+```
 
 Add notes about how to use the system.
 
-## ⛏️ Built With <a name = "tech_stack"></a>
-
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Express](https://expressjs.com/) - Server Framework
-- [VueJs](https://vuejs.org/) - Web Framework
-- [NodeJs](https://nodejs.org/en/) - Server Environment
-
 ## ✍️ Authors <a name = "authors"></a>
 
-- [@kylelobo](https://github.com/kylelobo) - Idea & Initial work
-
-See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors)
-who participated in this project.
+- [@alibaba](https://github.com/alibaba0010) - Added some functionalities
 
 ## 🎉 Acknowledgments <a name = "acknowledgments"></a>
 
-- Hat tip to anyone whose code was used
-- Inspiration
-- References
+- [@stackup](https://earn.stackup.dev/) - Idea & Initial work
+
+```
+
 ```
