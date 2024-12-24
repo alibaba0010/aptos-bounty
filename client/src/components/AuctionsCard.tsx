@@ -98,13 +98,13 @@ const AuctionsCard: FC<AuctionsCardProps> = ({
   };
   useEffect(() => {
     const timeSet = localStorage.getItem(nft.id.toString());
-    if (isRunning && nft.timer <= Date.now() - Number(timeSet)) {
+    const now = (Date.now() - Number(timeSet)) / 1000;
+    console.log(`Nft timer ${nft.timer} time set ${timeSet} in now ${now}`);
+    if (isRunning && nft.timer <= now) {
       finalizeBidHandler(nft);
-    } else {
-      return;
     }
     // eslint-disable-next-line
-  }, [isRunning, nft, timeLeft]);
+  }, [isRunning, nft]);
   return (
     <Col
       key={nft.id}
