@@ -1,5 +1,5 @@
 // TODO# 1: Define Module and Marketplace Address
-address 0x86979133542c09dc76ab1d92e920d64c0143b3f02322da6e1d737d3753752b7b {
+address 0x497d8a18b09879bb6fab1d79245d49f96272bc0ea4f1f595c4f2ff785b295283 {
 
     module NFTMarketplace {
         use 0x1::signer;
@@ -25,6 +25,7 @@ struct NFT has store, key {
             previous_bid: u64,
             current_bid: u64,
             new_offer: bool,
+            timer:u64,
             auction_offer_made: bool,
             previous_bidder: address,
             current_bidder:  address      // New: Array of bid prices
@@ -63,6 +64,7 @@ struct AuctionNFT has copy, drop {
             current_bidder:address,
             current_bid: u64,
             new_offer: bool,
+            timer: u64,
             rarity: u8
 }
         // TODO# 5: Set Marketplace Fee
@@ -105,6 +107,7 @@ struct AuctionNFT has copy, drop {
                 auction_offer_made: false,
                 new_offer: false,
                 previous_bidder: @0x0,
+                timer: 0,
                 current_bidder: @0x0
             };
 
@@ -348,11 +351,12 @@ nft_ref.made_ofer = true;
 
     }
     //TODO25: Auction NFT by the owner
-  public entry fun auction_nft(account: &signer, nft_id: u64) acquires Marketplace{
+  public entry fun auction_nft(account: &signer, nft_id: u64, timer: u64) acquires Marketplace{
             let marketplace = borrow_global_mut<Marketplace>(signer::address_of(account));
             let nft_ref = vector::borrow_mut(&mut marketplace.nfts, nft_id);
 
 nft_ref.on_auction = true;
+nft_ref.timer = timer;
 
 
   }
@@ -401,6 +405,7 @@ public fun get_nfts_on_auction(marketplace_addr: address, limit: u64, offset: u6
                         on_auction: nft.on_auction, 
                         auction_offer_made: nft.auction_offer_made,
                         new_offer: nft.new_offer, 
+                        timer: nft.timer,
                         rarity: nft.rarity 
                         };
                     vector::push_back(&mut auction_nfts, auction_nft);
@@ -462,9 +467,14 @@ if(nft_ref.auction_offer_made) {
             nft_ref.made_ofer = false;
             nft_ref.auction_offer_made = false;
             nft_ref.new_offer = false;
+            nft_ref.timer = 0;
 }else{
             nft_ref.owner = signer::address_of(account);
             nft_ref.on_auction = false;
+            nft_ref.new_offer = false;
+            nft_ref.current_bid = 0;
+            nft_ref.current_bidder= @0x0;
+            nft_ref.timer = 0;
           
 };
 }

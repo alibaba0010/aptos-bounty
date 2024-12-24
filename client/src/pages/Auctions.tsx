@@ -47,6 +47,7 @@ const Auctions = () => {
         uri: new TextDecoder().decode(hexToUint8Array(nft.uri.slice(2))),
         current_bid: nft.current_bid / 100000000,
         previous_bid: nft.previous_bid / 100000000,
+        timer: nft.timer / 100000000,
       }));
       setAuctionNfts(decodedNfts);
     } catch (error) {

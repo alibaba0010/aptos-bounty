@@ -57,8 +57,8 @@ const MarketView = ({ offer }: { offer: boolean }) => {
     nfts,
     setIsOfferModalVisible,
     setIsRunning,
-    setTimeLeft,
   } = useContext(NFTContext) as NFTContextType;
+
   useEffect(() => {
     handleFetchNfts(undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,13 +75,15 @@ const MarketView = ({ offer }: { offer: boolean }) => {
   };
 
   const handleAuctionClick = async (nft: NFT) => {
+    const timeInOctas = 90 * 100000000;
+
     if (!account) return;
     try {
       const entryFunctionPayload = {
         type: "entry_function_payload",
         function: `${marketplaceAddr}::NFTMarketplace::auction_nft`,
         type_arguments: [],
-        arguments: [nft.id.toString()],
+        arguments: [nft.id.toString(), timeInOctas.toString()],
       };
       const response = await (window as any).aptos.signAndSubmitTransaction(
         entryFunctionPayload
@@ -90,7 +92,8 @@ const MarketView = ({ offer }: { offer: boolean }) => {
 
       message.success("NFT Auctioned successfully!");
       setIsRunning(true);
-      setTimeLeft(90);
+
+      localStorage.setItem(nft.id.toString(), Date.now().toString());
     } catch (error) {
       console.error("Error auctioning NFT:", error);
       message.error("Failed to auction NFT.");
@@ -298,6 +301,7 @@ const MarketView = ({ offer }: { offer: boolean }) => {
             <p>
               <strong>Owner:</strong> {truncateAddress(selectedNft.owner)}
             </p>
+            {/* <p>Time left {timeLeft}</p> */}
           </>
         )}
       </Modal>

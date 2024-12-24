@@ -13,7 +13,6 @@ interface AuctionsCardProps {
   showAuctionedNFTsHandler: () => void;
 }
 const client = new AptosClient("https://fullnode.testnet.aptoslabs.com/v1");
-
 const AuctionsCard: FC<AuctionsCardProps> = ({
   nft,
   nftOwner,
@@ -27,13 +26,13 @@ const AuctionsCard: FC<AuctionsCardProps> = ({
     setIsRunning,
     isRunning,
     timeLeft,
+    setTimeLeft,
   } = useContext(NFTContext) as NFTContextType;
   const makeABidHandler = (nft: NFT) => {
     if (!account) return;
     setIsAuctionModalVisible(true);
     setSelectedAuctionNft(nft);
   };
-
   const finalizeBidHandler = async (nft: NFT) => {
     setIsRunning(false);
     if (!account) return;
@@ -49,7 +48,10 @@ const AuctionsCard: FC<AuctionsCardProps> = ({
       );
       await client.waitForTransaction(response.hash);
       message.success("Bid finalized successfully!");
-      window.location.reload();
+      showAuctionedNFTsHandler();
+      localStorage.removeItem(nft.id.toString());
+      sessionStorage.removeItem(nft.id.toString());
+      setTimeLeft(90);
     } catch (error) {
       console.error("Error occured when finalizing bid:", error);
       message.error("Failed to finalize bid.");
@@ -69,13 +71,12 @@ const AuctionsCard: FC<AuctionsCardProps> = ({
       );
       await client.waitForTransaction(response.hash);
       message.success("Bid accepted successfully!");
-      await showAuctionedNFTsHandler();
+      showAuctionedNFTsHandler();
     } catch (error) {
       console.error("Error occured when accepting bid:", error);
       message.error("Failed to accept bid.");
     }
   };
-
   const handleRejectBidOffer = async (nft: NFT) => {
     try {
       const entryFunctionPayload = {
@@ -89,17 +90,19 @@ const AuctionsCard: FC<AuctionsCardProps> = ({
       );
       await client.waitForTransaction(response.hash);
       message.success("NFT Offer Cancelled successfully!");
-      await showAuctionedNFTsHandler();
+      showAuctionedNFTsHandler();
     } catch (error) {
       console.error("Error occured when rejecting bid:", error);
       message.error("Failed to reject bid.");
     }
   };
   useEffect(() => {
-    if (isRunning && timeLeft === 0) {
+    const timeSet = localStorage.getItem(nft.id.toString());
+    if (isRunning && nft.timer <= Date.now() - Number(timeSet)) {
       finalizeBidHandler(nft);
+    } else {
+      return;
     }
-
     // eslint-disable-next-line
   }, [isRunning, nft, timeLeft]);
   return (
@@ -190,11 +193,10 @@ const AuctionsCard: FC<AuctionsCardProps> = ({
           <p>Current Bid: {nft.current_bid} APT</p>
           <p>{nft.description}</p>
           <p>ID: {nft.id}</p>
-          <p>Time Left: {timeLeft} seconds</p>
+          {nftOwner && <p>Time Left: {timeLeft} seconds</p>}
         </div>
       </Card>
     </Col>
   );
 };
-
 export default AuctionsCard;
