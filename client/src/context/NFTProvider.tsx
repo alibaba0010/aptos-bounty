@@ -36,8 +36,7 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
   );
   const [timeLeft, setTimeLeft] = useState<number>(90);
   const [isRunning, setIsRunning] = useState<boolean>(false);
-  const marketplaceAddr =
-    "0x497d8a18b09879bb6fab1d79245d49f96272bc0ea4f1f595c4f2ff785b295283";
+  const marketplaceAddr = "address";
   const handleMintNFTClick = () => {
     setIsModalVisible(true);
   };
@@ -47,7 +46,7 @@ const NFTProvider: FC<NFTProps> = ({ children }) => {
     try {
       const response = await client.getAccountResource(
         marketplaceAddr,
-        "0x497d8a18b09879bb6fab1d79245d49f96272bc0ea4f1f595c4f2ff785b295283::NFTMarketplace::Marketplace"
+        "address::NFTMarketplace::Marketplace"
       );
       const nftList = (response.data as { nfts: NFT[] }).nfts;
 
