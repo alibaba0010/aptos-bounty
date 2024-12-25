@@ -124,6 +124,18 @@ Smart contract
 
 TOOD 21 - TODO30
 Line 278-484
+Functionalities
+ - make_offer:  Function to make an offer by any user except the NFT owner
+ - show_offers: Function to show NFTs thats has offer made
+ - accept_offer: Function to accept the offer made
+ - reject_offer: Function to reject an offer made by a user
+ - auction_nft: Function to auction  NFT
+ - auction_bid_nft: Function to make a bid for an auctioned NFT
+ - get_nfts_on_auction: Function to get nfts on auction
+ - accept_auction_offer: Function to accept a bid made by a user on a NFt on auction
+ - reject_auction_offer: Function to reject an offer made by a user
+ - finalize_bid: Function to finalize the bid on an auction either a bid was made or not
+   or if the time has elasped
 ```
 
 Add notes about how to use the system.
