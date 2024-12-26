@@ -38,6 +38,8 @@ In this Aptos bounty, the foundations from Quest 2 was taken a level higher and 
 
 ## 💡 Idea / Solution <a name = "idea"></a>
 
+ADDRESS USED TO DEPLOY THE CONTRACT 0x497d8a18b09879bb6fab1d79245d49f96272bc0ea4f1f595c4f2ff785b295283
+
 This section described the functionality added to the project.
 
 - Auction System: Implement an auction feature for NFTs, allowing users to place bids over a set period, with the highest bidder winning the NFT. Ensure the smart contract logic supports tracking and updating bids securely.
@@ -57,7 +59,7 @@ This section described the functionality added to the project.
 These instructions will get you a copy of the project up and running on your local machine for development
 and testing purposes.
 
-- Git cLone the project
+- Git clone the project
 
 ### Prerequisites
 
